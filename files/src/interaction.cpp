@@ -16,10 +16,9 @@ char Interaction::make_choice(std::vector<char> v) {
     for(;;) {
         system("/bin/stty raw");
         key = getchar();
-        std::cout << "\r" << std::flush;
+        std::cout << "\b" << std::flush;
         system("/bin/stty cooked");
         if(Interaction::is_contains(v, key)) {
-            std::cout << "Touche 'a' saisie.";
             return key;
         }
     }
