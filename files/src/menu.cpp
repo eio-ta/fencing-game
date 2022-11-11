@@ -32,8 +32,8 @@ void Menu::print_fight() {
     std::cout << std::endl << std::endl;
     jeu.sc.print_text_center("FIGHT !!!");
     std::cout << std::endl;
-    Menu::print_separator();
     sleep(1);
+    system(CLEAN_SCREEN);
 }
 
 char Menu::interaction_answer(std::vector<char> v) {

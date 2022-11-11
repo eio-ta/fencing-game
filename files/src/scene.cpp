@@ -66,10 +66,36 @@ void Scene::create_grid_block(std::vector<std::string>& grid, int x, int w) {
 	grid[HEIGH_MENU-2][new_x+1] = 'X';	
 }
 
-void Scene::create_grid_player_r(std::vector<std::string>& grid, int x, int w, int &joueur_x, int &joueur_attribut) {
+void Scene::remove_last_position(std::vector<std::string>& grid, int &joueur_x) {
+	for(int i=1; i<6; ++i) {
+		for(int j=0; j<4; ++j) {
+			grid[HEIGH_MENU-i][joueur_x+j-1] = ' ';
+		}
+	}
+}
 
+void Scene::replace_new_position(std::vector<std::string>& grid, int &joueur_x, int &joueur_attribut) {
+	grid[HEIGH_MENU-5][joueur_x-1] = '<';
+	grid[HEIGH_MENU-5][joueur_x] = 'o';
+	grid[HEIGH_MENU-5][joueur_x+1] = '>';
+
+	grid[HEIGH_MENU-4][joueur_x] = '|';
+	grid[HEIGH_MENU-4][joueur_x+1] = '_';
+
+	if(joueur_attribut == 1) grid[HEIGH_MENU-4][joueur_x+2] = '/';
+	else if(joueur_attribut == 2) grid[HEIGH_MENU-4][joueur_x+2] = '|';
+	else grid[HEIGH_MENU-3][joueur_x+2] = '\\';
+
+	grid[HEIGH_MENU-3][joueur_x] = '|';
+	grid[HEIGH_MENU-2][joueur_x] = '|';
+	grid[HEIGH_MENU-1][joueur_x] = '|';
+	grid[HEIGH_MENU-1][joueur_x-1] = '/';
+}
+
+void Scene::create_grid_player_r(std::vector<std::string>& grid, int x, int w, int &joueur_x, int &joueur_attribut) {
 	int new_x = (x * WIDTH_MENU) / w;
 	joueur_x = new_x;
+	Scene::replace_new_position(grid, joueur_x, joueur_attribut);
 
 	/*
 
@@ -80,22 +106,6 @@ void Scene::create_grid_player_r(std::vector<std::string>& grid, int x, int w, i
 	/|
 
 	*/
-
-	grid[HEIGH_MENU-5][new_x-1] = '<';
-	grid[HEIGH_MENU-5][new_x] = 'o';
-	grid[HEIGH_MENU-5][new_x+1] = '>';
-
-	grid[HEIGH_MENU-4][new_x] = '|';
-	grid[HEIGH_MENU-4][new_x+1] = '_';
-
-	if(joueur_attribut == 1) grid[HEIGH_MENU-4][new_x+2] = '/';
-	else if(joueur_attribut == 2) grid[HEIGH_MENU-4][new_x+2] = '|';
-	else grid[HEIGH_MENU-3][new_x+2] = '\\';
-
-	grid[HEIGH_MENU-3][new_x] = '|';
-	grid[HEIGH_MENU-2][new_x] = '|';
-	grid[HEIGH_MENU-1][new_x] = '|';
-	grid[HEIGH_MENU-1][new_x-1] = '/';
 }
 
 void Scene::create_grid_player_l(std::vector<std::string>& grid, int x, int w, int &joueur_x, int &joueur_attribut) {
