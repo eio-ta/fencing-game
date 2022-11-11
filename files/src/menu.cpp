@@ -1,6 +1,6 @@
 #include "../include/menu.h"
 
-Interaction inter;
+Jeu jeu;
 
 void Menu::print_separator() {
     std::string str2 = "";
@@ -28,8 +28,7 @@ void Menu::print_text_center(std::string str) {
 char Menu::interaction_answer(std::vector<char> v) {
     Menu::print_separator();
     std::cout << "Your answer : ";
-
-    return inter.make_choice(v);
+    return jeu.inter.make_choice(v);
 }
 
 void Menu::print_first_menu() {
@@ -45,9 +44,8 @@ void Menu::print_first_menu() {
     char choice = Menu::interaction_answer(v);
 
     system(CLEAN_SCREEN);
-    if(choice == '1') {
-        Menu::print_second_menu(choice);
-    } else {
+    if(choice == '1') Menu::print_second_menu(choice);
+    else {
         // TODO : CHARGER UNE ANCIENNE PARTIE
     }
 }
@@ -83,12 +81,21 @@ void Menu::print_third_menu(char choice1, char choice2) {
     std::vector<char> v { '1', '2', '3'};
     char choice3 = Menu::interaction_answer(v);
 
-    system(CLEAN_SCREEN);
     if(choice3 == '1') {
         // TODO : NOUVELLE SCENE
+        system(CLEAN_SCREEN);
     } else if(choice3 == '2') {
-        // TODO : NOUVELLE SCENE DEPUIS UN FICHIER
+        std::cout << "\r" << "The filename : ";
+        std::string filename;
+        std::cin >> filename;
+        while(!jeu.sc.is_valid_scene(filename)) {
+            std::cout << "Wrong filename ! Please, give a good filename : ";
+            std::cin >> filename;
+        }
+        system(CLEAN_SCREEN);
+        jeu.sc.load_a_scene(filename);
     } else {
+        system(CLEAN_SCREEN);
         Menu::print_second_menu(choice2);
-    }
+    };
 }

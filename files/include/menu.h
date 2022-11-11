@@ -1,15 +1,7 @@
 #ifndef MENU_H
 #define MENU_H
 
-#include "interaction.h"
-
-#ifdef _WIN32
-    #define CLEAN_SCREEN "cls"
-#else
-    #define CLEAN_SCREEN "clear"
-#endif
-
-#define WIDTH_MENU 60
+#include "jeu.h"
 
 class Menu {
     public:
