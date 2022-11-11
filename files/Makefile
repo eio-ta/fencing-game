@@ -2,8 +2,8 @@ CC = g++
 
 all: output
 
-output: main.o menu.o interaction.o scene.o jeu.o
-	$(CC) main.o menu.o interaction.o scene.o jeu.o -o output
+output: main.o menu.o interaction.o scene.o jeu.o joueur.o
+	$(CC) main.o menu.o interaction.o scene.o jeu.o joueur.o -o output
 
 main.o: src/main.cpp
 	$(CC) -c src/main.cpp
@@ -19,6 +19,9 @@ scene.o : src/scene.cpp include/scene.h
 
 jeu.o : src/jeu.cpp include/jeu.h
 	$(CC) -c src/jeu.cpp
+
+joueur.o : src/joueur.cpp include/joueur.h
+	$(CC) -c src/joueur.cpp
 
 distclean :
 	rm -f *.o output

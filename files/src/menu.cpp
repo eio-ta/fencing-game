@@ -2,6 +2,17 @@
 
 Jeu jeu;
 
+void Menu::print_loading_bar() {
+    std::cout << std::endl << std::endl << "  LOADING : ";
+    for(int i=0; i<5; ++i) {
+        std::cout << "." << std::flush;
+        sleep(1);
+    }
+    std::cout << " 100 %" << std::endl << std::endl;
+    sleep(1);
+    system(CLEAN_SCREEN);
+}
+
 void Menu::print_separator() {
     std::string str2 = "";
     int size = WIDTH_MENU;
@@ -17,12 +28,12 @@ void Menu::print_first_line_menu() {
     Menu::print_separator();
 }
 
-void Menu::print_text_center(std::string str) {
-    int spacing = (WIDTH_MENU - str.length()) / 2;
-    for(int i=0; i<spacing; ++i) {
-        std::cout << " ";
-    }
-    std::cout << str << std::endl;
+void Menu::print_fight() {
+    std::cout << std::endl << std::endl;
+    jeu.sc.print_text_center("FIGHT !!!");
+    std::cout << std::endl;
+    Menu::print_separator();
+    sleep(1);
 }
 
 char Menu::interaction_answer(std::vector<char> v) {
@@ -33,11 +44,11 @@ char Menu::interaction_answer(std::vector<char> v) {
 
 void Menu::print_first_menu() {
     Menu::print_first_line_menu();
-    print_text_center("MENU OF THE GAME");
+    jeu.sc.print_text_center("MENU OF THE GAME");
     std::cout << std::endl;
 
-    print_text_center("1 - NEW GAME");
-    print_text_center("2 - LOAD THE LAST GAME");
+    jeu.sc.print_text_center("1 - NEW GAME");
+    jeu.sc.print_text_center("2 - LOAD THE LAST GAME");
     std::cout << std::endl;
 
     std::vector<char> v { '1', '2'};
@@ -52,12 +63,12 @@ void Menu::print_first_menu() {
 
 void Menu::print_second_menu(char choice1) {
     Menu::print_first_line_menu();
-    print_text_center("MENU OF THE GAME");
+    jeu.sc.print_text_center("MENU OF THE GAME");
     std::cout << std::endl;
 
-    print_text_center("1 - ONE PLAYER");
-    print_text_center("2 - TWO PLAYER");
-    print_text_center("3 - BACK");
+    jeu.sc.print_text_center("1 - ONE PLAYER");
+    jeu.sc.print_text_center("2 - TWO PLAYER");
+    jeu.sc.print_text_center("3 - BACK");
     std::cout << std::endl;
 
     std::vector<char> v { '1', '2', '3'};
@@ -70,12 +81,12 @@ void Menu::print_second_menu(char choice1) {
 
 void Menu::print_third_menu(char choice1, char choice2) {
     Menu::print_first_line_menu();
-    print_text_center("MENU OF THE GAME");
+    jeu.sc.print_text_center("MENU OF THE GAME");
     std::cout << std::endl;
 
-    print_text_center("1 - NEW SCENE");
-    print_text_center("2 - LOAD A SCENE FROM A FILE");
-    print_text_center("3 - BACK");
+    jeu.sc.print_text_center("1 - NEW SCENE");
+    jeu.sc.print_text_center("2 - LOAD A SCENE FROM A FILE");
+    jeu.sc.print_text_center("3 - BACK");
     std::cout << std::endl;
 
     std::vector<char> v { '1', '2', '3'};
@@ -84,6 +95,7 @@ void Menu::print_third_menu(char choice1, char choice2) {
     if(choice3 == '1') {
         // TODO : NOUVELLE SCENE
         system(CLEAN_SCREEN);
+        // TODO : FIN DU JEU
     } else if(choice3 == '2') {
         std::cout << "\r" << "The filename : ";
         std::string filename;
@@ -92,8 +104,16 @@ void Menu::print_third_menu(char choice1, char choice2) {
             std::cout << "Wrong filename ! Please, give a good filename : ";
             std::cin >> filename;
         }
-        system(CLEAN_SCREEN);
-        jeu.sc.load_a_scene(filename);
+
+        Menu::print_loading_bar();
+        std::string scene = jeu.sc.load_a_scene(filename);
+
+        Menu::print_fight();
+
+        jeu.start(scene, int(choice2));
+
+        // TODO : CHARGER UNE SCENE
+        // TODO : FIN DU JEU
     } else {
         system(CLEAN_SCREEN);
         Menu::print_second_menu(choice2);
