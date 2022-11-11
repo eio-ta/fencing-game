@@ -6,8 +6,8 @@
 
 class Interaction {
     public:
-        char make_choice(std::vector<char>);
-        int is_contains(std::vector<char>, char);
+        char make_choice(std::vector<int>);
+        int is_contains(std::vector<int>, int);
 };
 
 #endif // INTERACTION_H

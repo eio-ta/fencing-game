@@ -8,14 +8,11 @@ class Menu {
         /* Print the loading bar */
         void print_loading_bar();
 
-        /* Print the separator */
-        void print_separator();
-
         /* Print the first line of the game */
         void print_first_line_menu();
 
         /* Print the good menu with the player's choice */
-        char interaction_answer(std::vector<char>);
+        int interaction_answer(std::vector<int>);
 
         /* Print the first menu of the game */
         void print_first_menu();

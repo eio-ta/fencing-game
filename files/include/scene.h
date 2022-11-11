@@ -4,6 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <unistd.h>
 
 #include "joueur.h"
 
@@ -16,15 +17,27 @@
 #define WIDTH_MENU 60
 #define HEIGH_MENU 10
 
+#define KEY_UP 65
+#define KEY_DOWN 66
+#define KEY_LEFT 68
+#define KEY_RIGHT 67
+
 class Scene {
     public:
         /* Print the text at the center of the box */
         void print_text_center(std::string);
+
+        /* Print the separator */
+        void print_separator();
+
+        void print_fight();
+
         int count_occurence(std::string);
         std::string load_a_scene(std::string);
         int is_valid_scene(std::string);
 
-        void replace_new_position(std::vector<std::string>&, int &, int &);
+        void replace_new_position_r(std::vector<std::string>&, int &, int &);
+        void replace_new_position_l(std::vector<std::string>&, int &, int &);
 
         void create_grid_block(std::vector<std::string>&, int, int);
         void create_grid_player_r(std::vector<std::string>&, int, int, int&, int&);
