@@ -66,8 +66,10 @@ void Scene::create_grid_block(std::vector<std::string>& grid, int x, int w) {
 	grid[HEIGH_MENU-2][new_x+1] = 'X';	
 }
 
-void Scene::create_grid_player_r(std::vector<std::string>& grid, int x, int w, Joueur j) {
+void Scene::create_grid_player_r(std::vector<std::string>& grid, int x, int w, int &joueur_x, int &joueur_attribut) {
+
 	int new_x = (x * WIDTH_MENU) / w;
+	joueur_x = new_x;
 
 	/*
 
@@ -86,8 +88,8 @@ void Scene::create_grid_player_r(std::vector<std::string>& grid, int x, int w, J
 	grid[HEIGH_MENU-4][new_x] = '|';
 	grid[HEIGH_MENU-4][new_x+1] = '_';
 
-	if(j.attribut == 1) grid[HEIGH_MENU-4][new_x+2] = '/';
-	else if(j.attribut == 2) grid[HEIGH_MENU-4][new_x+2] = '|';
+	if(joueur_attribut == 1) grid[HEIGH_MENU-4][new_x+2] = '/';
+	else if(joueur_attribut == 2) grid[HEIGH_MENU-4][new_x+2] = '|';
 	else grid[HEIGH_MENU-3][new_x+2] = '\\';
 
 	grid[HEIGH_MENU-3][new_x] = '|';
@@ -96,8 +98,9 @@ void Scene::create_grid_player_r(std::vector<std::string>& grid, int x, int w, J
 	grid[HEIGH_MENU-1][new_x-1] = '/';
 }
 
-void Scene::create_grid_player_l(std::vector<std::string>& grid, int x, int w, Joueur j) {
+void Scene::create_grid_player_l(std::vector<std::string>& grid, int x, int w, int &joueur_x, int &joueur_attribut) {
 	int new_x = (x * WIDTH_MENU) / w;
+	joueur_x = new_x;
 
 	/*
 
@@ -116,8 +119,8 @@ void Scene::create_grid_player_l(std::vector<std::string>& grid, int x, int w, J
 	grid[HEIGH_MENU-4][new_x] = '|';
 	grid[HEIGH_MENU-4][new_x-1] = '_';
 	
-	if(j.attribut == 1) grid[HEIGH_MENU-4][new_x-2] = '\\';
-	else if(j.attribut == 2) grid[HEIGH_MENU-4][new_x-2] = '|';
+	if(joueur_attribut == 1) grid[HEIGH_MENU-4][new_x-2] = '\\';
+	else if(joueur_attribut == 2) grid[HEIGH_MENU-4][new_x-2] = '|';
 	else grid[HEIGH_MENU-3][new_x-2] = '/';
 
 	grid[HEIGH_MENU-3][new_x] = '|';
@@ -126,7 +129,7 @@ void Scene::create_grid_player_l(std::vector<std::string>& grid, int x, int w, J
 	grid[HEIGH_MENU-1][new_x+1] = '\\';
 }
 
-void Scene::print_scene(std::string scene, Joueur joueur1, Joueur joueur2) {
+std::vector<std::string> Scene::convert_scene(std::string scene, int &joueur1_x, int &joueur1_attribut, int &joueur1_dir, int &joueur2_x, int &joueur2_attribut, int &joueur2_dir) {
 	std::vector<std::string> lines (HEIGH_MENU, "");
     for(int i=0; i<HEIGH_MENU; ++i) {
         std::string line = "";
@@ -139,12 +142,12 @@ void Scene::print_scene(std::string scene, Joueur joueur1, Joueur joueur2) {
 	for(int i=0; i<scene.length(); ++i) {
 		switch (scene[i]) {
 			case '1':
-				if(joueur1.dir == 0) Scene::create_grid_player_r(lines, i, scene.length(), joueur1);
-				else Scene::create_grid_player_l(lines, i, scene.length(), joueur1);
+				if(joueur1_dir == 0) Scene::create_grid_player_r(lines, i, scene.length(), joueur1_x, joueur1_attribut);
+				else Scene::create_grid_player_l(lines, i, scene.length(), joueur1_x, joueur1_attribut);
 				break;
 			case '2':
-				if(joueur2.dir == 0) Scene::create_grid_player_r(lines, i, scene.length(), joueur2);
-				else Scene::create_grid_player_l(lines, i, scene.length(), joueur2);
+				if(joueur2_dir == 0) Scene::create_grid_player_r(lines, i, scene.length(), joueur2_x, joueur2_attribut);
+				else Scene::create_grid_player_l(lines, i, scene.length(), joueur2_x, joueur2_attribut);
 				break;
 			case 'x':
 				Scene::create_grid_block(lines, i, scene.length());
@@ -152,7 +155,10 @@ void Scene::print_scene(std::string scene, Joueur joueur1, Joueur joueur2) {
 			default: break;
 		}
 	}
+	return lines;
+}
 
+void Scene::print_scene(std::vector<std::string> lines) {
     for(int i = 0; i < HEIGH_MENU; ++i) {
         std::cout << lines[i] << std::endl;
     }
