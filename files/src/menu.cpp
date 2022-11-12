@@ -19,7 +19,7 @@ void Menu::print_first_line_menu() {
     jeu.sc.print_separator();
 }
 
-int Menu::interaction_answer(std::vector<int> v) {
+char Menu::interaction_answer(std::vector<char> v) {
     jeu.sc.print_separator();
     std::cout << "Your answer : ";
     return jeu.inter.make_choice(v);
@@ -34,11 +34,11 @@ void Menu::print_first_menu() {
     jeu.sc.print_text_center("2 - LOAD THE LAST GAME");
     std::cout << std::endl;
 
-    std::vector<int> v {49, 50};
+    std::vector<char> v {'1', '2'};
     char choice = Menu::interaction_answer(v);
 
     system(CLEAN_SCREEN);
-    if(choice == 49) Menu::print_second_menu(choice);
+    if(choice == '1') Menu::print_second_menu(choice);
     else {
         // TODO : CHARGER UNE ANCIENNE PARTIE
     }
@@ -54,11 +54,11 @@ void Menu::print_second_menu(char choice1) {
     jeu.sc.print_text_center("3 - BACK");
     std::cout << std::endl;
 
-    std::vector<int> v {49, 50, 51};
+    std::vector<char> v {'1', '2', '3'};
     char choice2 = Menu::interaction_answer(v);
 
     system(CLEAN_SCREEN);
-    if(choice2 == 51) Menu::print_first_menu();
+    if(choice2 == '3') Menu::print_first_menu();
     Menu::print_third_menu(choice1, choice2);
 }
 
@@ -72,10 +72,10 @@ void Menu::print_third_menu(char choice1, char choice2) {
     jeu.sc.print_text_center("3 - BACK");
     std::cout << std::endl;
 
-    std::vector<int> v {49, 50, 51};
+    std::vector<char> v {'1', '2', '3'};
     char choice3 = Menu::interaction_answer(v);
 
-    if(choice3 == 49) {
+    if(choice3 == '1') {
         Menu::print_loading_bar();
         std::string scene = "_____1_____________2_____";
 
@@ -84,7 +84,7 @@ void Menu::print_third_menu(char choice1, char choice2) {
         jeu.start(scene, int(choice2));
         
         // TODO : FIN DU JEU
-    } else if(choice3 == 50) {
+    } else if(choice3 == '2') {
         std::cout << "\r" << "The filename : ";
         std::string filename;
         std::cin >> filename;

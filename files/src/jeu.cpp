@@ -47,22 +47,30 @@ void Jeu::start(std::string scene, int nb_joueur) {
     Jeu::print_scene_battle(joueur1, joueur2, grid);
 
     while(true) {
-        std::vector<int> mov1 {100, KEY_RIGHT, 113, KEY_LEFT};
-        int choice = inter.make_choice(mov1);
+        std::vector<char> mov1 {'d', 'q', '\033'};
+        char choice = inter.make_choice(mov1);
         switch(choice) {
-            case 100:
+            case 'd':
                 if(move_right(grid, joueur1)) Jeu::print_scene_battle(joueur1, joueur2, grid);
                 break;
-            case KEY_RIGHT:
-                if(move_right(grid, joueur2)) Jeu::print_scene_battle(joueur1, joueur2, grid);
-                break;
-            case 113:
+            case 'q':
                 if(move_left(grid, joueur1)) Jeu::print_scene_battle(joueur1, joueur2, grid);
                 break;
-            case KEY_LEFT:
-                if(move_left(grid, joueur2)) Jeu::print_scene_battle(joueur1, joueur2, grid);
-                break;
-            default: break;
+                
+            case '\033':
+                choice = getchar();
+                choice = getchar();
+                switch(choice) {
+                    case 'C':
+                        if(move_right(grid, joueur2)) Jeu::print_scene_battle(joueur1, joueur2, grid);
+                        break;
+                    case 'D':
+                        if(move_left(grid, joueur2)) Jeu::print_scene_battle(joueur1, joueur2, grid);
+                        break;
+                    default: break;
+                }
+            break;
+            default: Jeu::print_scene_battle(joueur1, joueur2, grid); break;
         }
     }
 }

@@ -1,23 +1,23 @@
 #include "../include/interaction.h"
 
-int Interaction::is_contains(std::vector<int> v, int e) {
-    for(std::vector<int>::iterator it = v.begin() ; it != v.end(); ++it) {
+int Interaction::is_contains(std::vector<char> v, char e) {
+    for(std::vector<char>::iterator it = v.begin() ; it != v.end(); ++it) {
         if(e == *it) return 0;
     }
     return 1;
 }
 
-char Interaction::make_choice(std::vector<int> v) {
+char Interaction::make_choice(std::vector<char> v) {
     char choice;
-    int key;
+    // int key;
     for(;;) {
         system("/bin/stty raw");
         choice = getchar();
         std::cout << "\b" << std::flush;
         system("/bin/stty cooked");
-        key = (int) choice;
+        //key = (int) choice;
         //std::cout << key << std::endl;
-        if(Interaction::is_contains(v, key) == 0) return key;
+        if(Interaction::is_contains(v, choice) == 0) return choice;
     }
-    return 0;
+    return '0';
 }

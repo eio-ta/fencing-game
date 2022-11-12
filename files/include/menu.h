@@ -12,7 +12,7 @@ class Menu {
         void print_first_line_menu();
 
         /* Print the good menu with the player's choice */
-        int interaction_answer(std::vector<int>);
+        char interaction_answer(std::vector<char>);
 
         /* Print the first menu of the game */
         void print_first_menu();
