@@ -1,23 +1,31 @@
 #ifndef JEU_H
 #define JEU_H
 
-#include <iostream>
-
 #include "interaction.h"
+#include "menu.h"
 #include "scene.h"
-#include "joueur.h"
+
+#define FRAME_PER_SECONDS 12
 
 class Jeu {
-    public:
+    protected:
         Interaction inter;
+        Menu menu;
         Scene sc;
 
-        void print_scene_battle(Joueur, Joueur, std::vector<std::string>);
+    public:
+        void start();
 
-        void start(std::string, int);
+        char first_menu();
+        char second_menu(char);
+        std::vector<char> print_menu();
 
-        bool move_right(std::vector<std::string> &, Joueur &);
-        bool move_left(std::vector<std::string> &, Joueur &);
+        void move_right(std::vector<std::string> &, Joueur &);
+        void move_left(std::vector<std::string> &, Joueur &);
+
+        void game_start(Joueur, Joueur, std::string);
+        
 };
+
 
 #endif // JEU_H

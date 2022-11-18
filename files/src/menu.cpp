@@ -1,10 +1,33 @@
 #include "../include/menu.h"
 
-Jeu jeu;
+void Menu::separator() {
+    std::string str2 = "";
+    int size = WIDTH_MENU;
+    for(int i=0; i<size; ++i) {
+        str2 += "_";
+    }
+    std::cout << str2 << std::endl << std::endl;
+}
 
-void Menu::print_loading_bar() {
+void Menu::text_center(std::string str) {
+    int spacing = (WIDTH_MENU - str.length()) / 2;
+    for(int i=0; i<spacing; ++i) {
+        std::cout << " ";
+    }
+    std::cout << str << std::endl;
+}
+
+void Menu::print_first_line(std::string str) {
+    std::cout << std::endl << std::endl;
+    Menu::text_center(str);
+    std::cout << std::endl;
+    Menu::separator();
+    std::cout << std::endl;
+}
+
+void Menu::loading_bar() {
     std::cout << std::endl << std::endl << "  LOADING : ";
-    for(int i=0; i<5; ++i) {
+    for(int i=0; i<7; ++i) {
         std::cout << "." << std::flush;
         sleep(1);
     }
@@ -13,95 +36,38 @@ void Menu::print_loading_bar() {
     system(CLEAN_SCREEN);
 }
 
-void Menu::print_first_line_menu() {
-    std::string str1 = "   Click on the corresponding button to make your choice.   ";
-    std::cout << std::endl << std::endl << str1 << std::endl << std::endl;
-    jeu.sc.print_separator();
-}
+std::vector<char> Menu::first_menu() {
+    Menu::print_first_line("Cliquez sur le bouton correspondant pour faire votre choix.");
 
-char Menu::interaction_answer(std::vector<char> v) {
-    jeu.sc.print_separator();
-    std::cout << "Your answer : ";
-    return jeu.inter.make_choice(v);
-}
-
-void Menu::print_first_menu() {
-    Menu::print_first_line_menu();
-    jeu.sc.print_text_center("MENU OF THE GAME");
+    Menu::text_center("MENU DU JEU :");
     std::cout << std::endl;
 
-    jeu.sc.print_text_center("1 - NEW GAME");
-    jeu.sc.print_text_center("2 - LOAD THE LAST GAME");
+    Menu::text_center("1 - PARTIE SIMPLE");
+    Menu::text_center("2 - PARTIE PERSONNALISÉE");
+    Menu::text_center("3 - CHARGER UNE PARTIE AVEC UN FICHIER");
     std::cout << std::endl;
 
-    std::vector<char> v {'1', '2'};
-    char choice = Menu::interaction_answer(v);
-
-    system(CLEAN_SCREEN);
-    if(choice == '1') Menu::print_second_menu(choice);
-    else {
-        // TODO : CHARGER UNE ANCIENNE PARTIE
-    }
-}
-
-void Menu::print_second_menu(char choice1) {
-    Menu::print_first_line_menu();
-    jeu.sc.print_text_center("MENU OF THE GAME");
-    std::cout << std::endl;
-
-    jeu.sc.print_text_center("1 - ONE PLAYER");
-    jeu.sc.print_text_center("2 - TWO PLAYER");
-    jeu.sc.print_text_center("3 - BACK");
-    std::cout << std::endl;
+    Menu::separator();
+    std::cout << "Votre réponse : ";
 
     std::vector<char> v {'1', '2', '3'};
-    char choice2 = Menu::interaction_answer(v);
-
-    system(CLEAN_SCREEN);
-    if(choice2 == '3') Menu::print_first_menu();
-    Menu::print_third_menu(choice1, choice2);
+    return v;
 }
 
-void Menu::print_third_menu(char choice1, char choice2) {
-    Menu::print_first_line_menu();
-    jeu.sc.print_text_center("MENU OF THE GAME");
+std::vector<char> Menu::choose_your_scene() {
+    Menu::print_first_line("Cliquez sur le bouton correspondant pour faire votre choix.");
+    
+    Menu::text_center("MENU DU JEU :");
     std::cout << std::endl;
 
-    jeu.sc.print_text_center("1 - NEW SCENE");
-    jeu.sc.print_text_center("2 - LOAD A SCENE FROM A FILE");
-    jeu.sc.print_text_center("3 - BACK");
+    Menu::text_center("1 - SCÈNE PAR DÉFAUT");
+    Menu::text_center("2 - CHARGER UNE SCÈNE AVEC UN FICHIER");
+    Menu::text_center("3 - RETOUR");
     std::cout << std::endl;
+
+    Menu::separator();
+    std::cout << "Votre réponse : ";
 
     std::vector<char> v {'1', '2', '3'};
-    char choice3 = Menu::interaction_answer(v);
-
-    if(choice3 == '1') {
-        Menu::print_loading_bar();
-        std::string scene = "_____1_____________2_____";
-
-        jeu.sc.print_fight();
-
-        jeu.start(scene, int(choice2));
-        
-        // TODO : FIN DU JEU
-    } else if(choice3 == '2') {
-        std::cout << "\r" << "The filename : ";
-        std::string filename;
-        std::cin >> filename;
-        while(!jeu.sc.is_valid_scene(filename)) {
-            std::cout << "Wrong filename ! Please, give a good filename : ";
-            std::cin >> filename;
-        }
-
-        Menu::print_loading_bar();
-        std::string scene = jeu.sc.load_a_scene(filename);
-
-        jeu.sc.print_fight();
-
-        jeu.start(scene, int(choice2));
-        // TODO : FIN DU JEU
-    } else {
-        system(CLEAN_SCREEN);
-        Menu::print_second_menu(choice2);
-    };
+    return v;
 }

@@ -1,76 +1,134 @@
 #include "../include/jeu.h"
 
-bool Jeu::move_left(std::vector<std::string> &grid, Joueur &joueur) {
-    if((joueur.x - 1) > 2) {
-        std::cout << "f" << std::endl;
-        if(grid[HEIGH_MENU-1][(joueur.x - 1 - 2)] == ' ') {
-            sc.remove_last_position(grid, joueur.x);
-            joueur.x -= 1;
-            sc.replace_new_position_l(grid, joueur.x, joueur.attribut);
-            return true;
-        }
-        return false;
-    }
-    return false;
-}
 
-bool Jeu::move_right(std::vector<std::string> &grid, Joueur &joueur) {
-    if((joueur.x + 1) < WIDTH_MENU-2) {
-        if(grid[HEIGH_MENU-1][(joueur.x + 1 + 2)] == ' ') {
-            sc.remove_last_position(grid, joueur.x);
-            joueur.x += 1;
-            sc.replace_new_position_r(grid, joueur.x, joueur.attribut);
-            return true;
-        }
-        return false;
-    }
-    return false;
-}
+/// AFFICHER LE MENU ///////////////////////////////////////////////////////////////////////////
 
-void Jeu::print_scene_battle(Joueur joueur1, Joueur joueur2, std::vector<std::string> grid) {
+char Jeu::first_menu() {
+    std::vector<char> v = menu.first_menu();
+    char c1 = inter.make_choice(v);
     system(CLEAN_SCREEN);
-
-    sc.print_fight();
-
-    std::string line_point = "| " + std::to_string(joueur1.point) + " | " + std::to_string(joueur2.point) + " |";
-    sc.print_text_center(line_point);
-
-    sc.print_scene(grid);
+    return c1;
 }
 
-void Jeu::start(std::string scene, int nb_joueur) {
-    Joueur joueur1;
-    Joueur joueur2;
-    joueur2.dir = 1;
+char Jeu::second_menu(char c1) {
+    std::vector<char> v = menu.choose_your_scene();
+    char c2 = inter.make_choice(v);
+    if(c2 == '1') {
+        std::string space (20, ' ');
+        std::cout << "\r" << space;
+        // menu.loading_bar();
+        system(CLEAN_SCREEN);
+    } else if(c2 == '3') system(CLEAN_SCREEN);
+    return c2;
+}
 
-    std::vector<std::string> grid = sc.convert_scene(scene, joueur1.x, joueur1.attribut, joueur1.dir, joueur2.x, joueur2.attribut, joueur2.dir);
-    Jeu::print_scene_battle(joueur1, joueur2, grid);
+std::vector<char> Jeu::print_menu() {
+    char c1 = 0;
+    char c2 = 0;
+    char c3 = 0;
+
+    //menu.loading_bar();
+
+    c1 = Jeu::first_menu();
+    c2 = Jeu::second_menu(c1);
+
+    while(c2 == '3') {
+        c1 = Jeu::first_menu();
+        c2 = Jeu::second_menu(c1);
+    }
+
+    std::vector<char> v {c1, c2};
+    return v;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+/// QUE LE JEU COMMENCE ! //////////////////////////////////////////////////////////////////////
+
+void Jeu::move_right(std::vector<std::string> &grid, Joueur &j) {
+    if(j.move_right(grid, WIDTH_SCENE, HEIGH_SCENE) == 0) {
+        sc.remove_last_position(grid, j);
+        sc.replace_player_r(grid, j);
+    }
+}
+
+void Jeu::move_left(std::vector<std::string> &grid, Joueur &j) {
+    if(j.move_left(grid, WIDTH_SCENE, HEIGH_SCENE) == 0) {
+        sc.remove_last_position(grid, j);
+        sc.replace_player_l(grid, j);
+    }
+}
+
+
+void Jeu::game_start(Joueur j1, Joueur j2, std::string scene) {
+    std::vector<std::string> grid = sc.convert_scene(scene, j1, j2);
+    sc.print_scene(grid, j1, j2);
 
     while(true) {
         std::vector<char> mov1 {'d', 'q', '\033'};
         char choice = inter.make_choice(mov1);
         switch(choice) {
             case 'd':
-                if(move_right(grid, joueur1)) Jeu::print_scene_battle(joueur1, joueur2, grid);
+                Jeu::move_right(grid, j1);
+                sleep(j1.get_movement_speed()/FRAME_PER_SECONDS);
                 break;
             case 'q':
-                if(move_left(grid, joueur1)) Jeu::print_scene_battle(joueur1, joueur2, grid);
+                Jeu::move_left(grid, j1);
+                sleep(j1.get_movement_speed()/FRAME_PER_SECONDS);
                 break;
-                
             case '\033':
                 choice = getchar();
                 choice = getchar();
                 switch(choice) {
                     case 'C':
-                        if(move_right(grid, joueur2)) Jeu::print_scene_battle(joueur1, joueur2, grid);
+                        Jeu::move_right(grid, j2);
+                        sleep(j2.get_movement_speed()/FRAME_PER_SECONDS);
                         break;
                     case 'D':
-                        if(move_left(grid, joueur2)) Jeu::print_scene_battle(joueur1, joueur2, grid);
+                        Jeu::move_left(grid, j2);
+                        sleep(j2.get_movement_speed()/FRAME_PER_SECONDS);
                         break;
                     default: break;
                 }
-            break;
-            default: Jeu::print_scene_battle(joueur1, joueur2, grid); break;
+                break;
+            default: break;
         }
+
+        system(CLEAN_SCREEN);
+        sc.print_scene(grid, j1, j2);
     }
+
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+
+/// FONCTION PRINCIPALE ///////////////////////////////////////////////////////////////////////
+
+void Jeu::start() {
+    std::vector<char> choice = Jeu::print_menu();
+
+    // CHOISIR LA SCENE
+    std::string scene = "____1_____x______2___";
+    if(choice[1] == '2') {
+        scene = sc.load_a_scene("");
+
+        std::cout << "\r" << "Nom du fichier : ";
+        std::string filename;
+        std::cin >> filename;
+        while(!sc.is_valid_scene(filename)) {
+            std::cout << "Mauvais fichier ! Donnez un bon chemin relatif : ";
+            std::cin >> filename;
+        }
+        scene = sc.load_a_scene(filename);
+    }
+
+    // CHOISIR LES PERSONNAGES
+    Joueur j1;
+    Joueur j2;
+    j2.set_dir();
+
+    Jeu::game_start(j1, j2, scene);
 }

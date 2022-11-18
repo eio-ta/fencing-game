@@ -7,16 +7,14 @@ int Interaction::is_contains(std::vector<char> v, char e) {
     return 1;
 }
 
+
 char Interaction::make_choice(std::vector<char> v) {
     char choice;
-    // int key;
     for(;;) {
         system("/bin/stty raw");
         choice = getchar();
         std::cout << "\b" << std::flush;
         system("/bin/stty cooked");
-        //key = (int) choice;
-        //std::cout << key << std::endl;
         if(Interaction::is_contains(v, choice) == 0) return choice;
     }
     return '0';
