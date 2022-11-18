@@ -6,7 +6,7 @@
 
 class Joueur {
     protected:
-        int movement_speed;
+        float movement_speed;
         int attacking_range;
         int attacking_speed;
         int defending_range;
@@ -22,14 +22,17 @@ class Joueur {
 
         void set_dir();
         void set_x(int);
+
         int get_point();
         int get_attribute();
         int get_dir();
         int get_x();
-        int get_movement_speed();
+        float get_movement_speed();
 
         int move_right(std::vector<std::string>, int, int);
         int move_left(std::vector<std::string>, int, int);
+        int jump_right(std::vector<std::string>, int, int);
+        int jump_left(std::vector<std::string>, int, int);
          
 };
 

@@ -20,17 +20,17 @@ class Scene {
         void text_center(std::string);
         void separator();
         void print_first_line(std::string);
-        void print_scene(std::vector<std::string>, Joueur, Joueur);
 
         void convert_block(std::vector<std::string>&, int, int);
-        void replace_player_r(std::vector<std::string>&, Joueur);
-        void convert_player_r(std::vector<std::string>&, int, int, Joueur&);
-        void replace_player_l(std::vector<std::string>&, Joueur);
-        void convert_player_l(std::vector<std::string>&, int, int, Joueur&);
-
+        void replace_player_r(std::vector<std::string>&, Joueur, int);
+        void convert_player_r(std::vector<std::string>&, int, int, Joueur&, int);
+        void replace_player_l(std::vector<std::string>&, Joueur, int);
+        void convert_player_l(std::vector<std::string>&, int, int, Joueur&, int);
         std::vector<std::string> convert_scene(std::string, Joueur&, Joueur&);
 
         void remove_last_position(std::vector<std::string>&, Joueur);
+
+        void print_scene(std::vector<std::string>, Joueur, Joueur);
 };
 
 

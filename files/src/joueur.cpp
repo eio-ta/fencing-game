@@ -65,6 +65,24 @@ int Joueur::move_left(std::vector<std::string> grid, int w, int h) {
     } return 1;
 }
 
-int Joueur::get_movement_speed() {
+int Joueur::jump_right(std::vector<std::string> grid, int w, int h) {
+    if(this->x+9 < w-2) {
+        for(int i=2; i<10; ++i) {
+            if(grid[h-1][(this->x+i)] != ' ' && grid[h-1][(this->x+i)] != 'X') return 1;
+        }
+        return 0;
+    } return 1;
+}
+
+int Joueur::jump_left(std::vector<std::string> grid, int w, int h) {
+    if(this->x-9 > 2) {
+        for(int i=-9; i<-2; ++i) {
+            if(grid[h-1][(this->x+i)] != ' ' && grid[h-1][(this->x+i)] != 'X') return 1;
+        }
+        return 0;
+    } return 1;
+}
+
+float Joueur::get_movement_speed() {
     return this->movement_speed;
 }

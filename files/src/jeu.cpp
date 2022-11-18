@@ -50,7 +50,7 @@ void Jeu::move_right(std::vector<std::string> &grid, Joueur &j) {
     if(j.move_right(grid, WIDTH_SCENE, HEIGH_SCENE) == 0) {
         sc.remove_last_position(grid, j);
         j.set_x(j.get_x()+1);
-        sc.replace_player_r(grid, j);
+        sc.replace_player_r(grid, j, 1);
     }
 }
 
@@ -58,8 +58,51 @@ void Jeu::move_left(std::vector<std::string> &grid, Joueur &j) {
     if(j.move_left(grid, WIDTH_SCENE, HEIGH_SCENE) == 0) {
         sc.remove_last_position(grid, j);
         j.set_x(j.get_x()-1);
-        sc.replace_player_l(grid, j);
+        sc.replace_player_l(grid, j, 1);
     }
+}
+
+void Jeu::jump_right(std::vector<std::string> &grid, Joueur &j, Joueur j2) {
+    if(j.jump_right(grid, WIDTH_SCENE, HEIGH_SCENE) == 0) {
+        sc.remove_last_position(grid, j);
+        j.set_x(j.get_x()+4);
+        sc.replace_player_r(grid, j, 0);
+        system(CLEAN_SCREEN);
+        sc.print_scene(grid, j, j2);
+        sleep((float) (j.get_movement_speed() / (float) FRAME_PER_SECONDS));
+
+        sc.remove_last_position(grid, j);
+        j.set_x(j.get_x()+3);
+        sc.replace_player_r(grid, j, 0);
+        system(CLEAN_SCREEN);
+        sc.print_scene(grid, j, j2);
+        sleep((float) (j.get_movement_speed() / (float) FRAME_PER_SECONDS));
+
+        sc.remove_last_position(grid, j);
+        sc.replace_player_r(grid, j, 1);
+    }
+}
+
+void Jeu::jump_left(std::vector<std::string> &grid, Joueur &j, Joueur j2) {
+    if(j.jump_left(grid, WIDTH_SCENE, HEIGH_SCENE) == 0) {
+        sc.remove_last_position(grid, j);
+        j.set_x(j.get_x()-4);
+        sc.replace_player_l(grid, j, 0);
+        system(CLEAN_SCREEN);
+        sc.print_scene(grid, j, j2);
+        sleep((float) (j.get_movement_speed() / (float) FRAME_PER_SECONDS));
+
+        sc.remove_last_position(grid, j);
+        j.set_x(j.get_x()-3);
+        sc.replace_player_l(grid, j, 0);
+        system(CLEAN_SCREEN);
+        sc.print_scene(grid, j, j2);
+        sleep((float) (j.get_movement_speed() / (float) FRAME_PER_SECONDS));
+
+        sc.remove_last_position(grid, j);
+        sc.replace_player_l(grid, j, 1);
+    }
+    
 }
 
 
@@ -68,16 +111,36 @@ void Jeu::game_start(Joueur j1, Joueur j2, std::string scene) {
     sc.print_scene(grid, j1, j2);
 
     while(true){
-        std::vector<char> mov1 {'d', 'q', '\033'};
-        char choice = inter.make_choice(mov1);
+        std::vector<char> v {'d', 'q', 'a', 'e', 'l', 'm', '\033'};
+        char choice = inter.make_choice(v);
         switch(choice) {
             case 'd':
                 Jeu::move_right(grid, j1);
-                sleep(j1.get_movement_speed()/FRAME_PER_SECONDS);
+                sleep((float) (j1.get_movement_speed() / (float) FRAME_PER_SECONDS));
                 break;
             case 'q':
                 Jeu::move_left(grid, j1);
-                sleep(j1.get_movement_speed()/FRAME_PER_SECONDS);
+                sleep((float) (j1.get_movement_speed() / (float) FRAME_PER_SECONDS));
+                break;
+            case 'e':
+                Jeu::jump_right(grid, j1, j2);
+                sleep((float) (j1.get_movement_speed() / (float) FRAME_PER_SECONDS));
+                break;
+            case 'a':
+                Jeu::jump_left(grid, j1, j2);
+                sleep((float) (j1.get_movement_speed() / (float) FRAME_PER_SECONDS));
+                break;
+            
+
+
+            
+            case 'm':
+                Jeu::jump_right(grid, j2, j1);
+                sleep((float) (j1.get_movement_speed() / (float) FRAME_PER_SECONDS));
+                break;
+            case 'l':
+                Jeu::jump_left(grid, j2, j1);
+                sleep((float) (j2.get_movement_speed() / (float) FRAME_PER_SECONDS));
                 break;
             case '\033':
                 choice = getchar();
@@ -85,11 +148,11 @@ void Jeu::game_start(Joueur j1, Joueur j2, std::string scene) {
                 switch(choice) {
                     case 'C':
                         Jeu::move_right(grid, j2);
-                        sleep(j2.get_movement_speed()/FRAME_PER_SECONDS);
+                        sleep((float) (j2.get_movement_speed() / (float) FRAME_PER_SECONDS));
                         break;
                     case 'D':
                         Jeu::move_left(grid, j2);
-                        sleep(j2.get_movement_speed()/FRAME_PER_SECONDS);
+                        sleep((float) (j2.get_movement_speed() / (float) FRAME_PER_SECONDS));
                         break;
                     default: break;
                 }

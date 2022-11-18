@@ -12,7 +12,6 @@
 #endif
 
 #define WIDTH_MENU 65
-#define HEIGH_MENU 10
 
 class Menu {
     public:

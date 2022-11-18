@@ -5,7 +5,7 @@
 #include "menu.h"
 #include "scene.h"
 
-#define FRAME_PER_SECONDS 12
+#define FRAME_PER_SECONDS 3
 
 class Jeu {
     protected:
@@ -22,6 +22,8 @@ class Jeu {
 
         void move_right(std::vector<std::string> &, Joueur &);
         void move_left(std::vector<std::string> &, Joueur &);
+        void jump_right(std::vector<std::string> &, Joueur &, Joueur);
+        void jump_left(std::vector<std::string> &, Joueur &, Joueur);
 
         void game_start(Joueur, Joueur, std::string);
         

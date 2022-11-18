@@ -110,31 +110,30 @@ void Scene::convert_block(std::vector<std::string>& grid, int x, int w) {
 	grid[HEIGH_SCENE-2][new_x+1] = 'X';
 }
 
-void Scene::replace_player_r(std::vector<std::string>& grid, Joueur j) {
-	grid[HEIGH_SCENE-5][j.get_x()-1] = '<';
-	grid[HEIGH_SCENE-5][j.get_x()] = 'o';
-	grid[HEIGH_SCENE-5][j.get_x()+1] = '>';
+void Scene::replace_player_r(std::vector<std::string>& grid, Joueur j, int jump) {
+	int h = HEIGH_SCENE;
+	if(jump == 0) h = HEIGH_SCENE - 2;
+	grid[h-5][j.get_x()-1] = '<';
+	grid[h-5][j.get_x()] = 'o';
+	grid[h-5][j.get_x()+1] = '>';
 
-	grid[HEIGH_SCENE-4][j.get_x()] = '|';
-	grid[HEIGH_SCENE-4][j.get_x()+1] = '_';
+	grid[h-4][j.get_x()] = '|';
+	grid[h-4][j.get_x()+1] = '_';
 
-	if(j.get_attribute() == 1) grid[HEIGH_SCENE-4][j.get_x()+2] = '/';
-	else if(j.get_attribute() == 2) grid[HEIGH_SCENE-4][j.get_x()+2] = '|';
-	else grid[HEIGH_SCENE-3][j.get_x()+2] = '\\';
+	if(j.get_attribute() == 1) grid[h-4][j.get_x()+2] = '/';
+	else if(j.get_attribute() == 2) grid[h-4][j.get_x()+2] = '|';
+	else grid[h-3][j.get_x()+2] = '\\';
 
-	grid[HEIGH_SCENE-3][j.get_x()] = '|';
-	grid[HEIGH_SCENE-2][j.get_x()] = '|';
-	grid[HEIGH_SCENE-1][j.get_x()] = '|';
-	grid[HEIGH_SCENE-1][j.get_x()-1] = '/';
+	grid[h-3][j.get_x()] = '|';
+	grid[h-2][j.get_x()] = '|';
+	grid[h-1][j.get_x()] = '|';
+	grid[h-1][j.get_x()-1] = '/';
 }
 
-void Scene::convert_player_r(std::vector<std::string>& grid, int x, int w, Joueur &j) {
+void Scene::convert_player_r(std::vector<std::string>& grid, int x, int w, Joueur &j, int jump) {
 	int new_x = (x * WIDTH_SCENE) / w;
 	j.set_x(new_x);
-	Scene::replace_player_r(grid, j);
-
-	std::cout << j.get_x() << std::endl;
-
+	Scene::replace_player_r(grid, j, jump);
 
 	/*
 
@@ -147,28 +146,30 @@ void Scene::convert_player_r(std::vector<std::string>& grid, int x, int w, Joueu
 	*/
 }
 
-void Scene::replace_player_l(std::vector<std::string>& grid, Joueur j) {
-	grid[HEIGH_SCENE-5][j.get_x()-1] = '<';
-	grid[HEIGH_SCENE-5][j.get_x()] = 'o';
-	grid[HEIGH_SCENE-5][j.get_x()+1] = '>';
+void Scene::replace_player_l(std::vector<std::string>& grid, Joueur j, int jump) {
+	int h = HEIGH_SCENE;
+	if(jump == 0) h = HEIGH_SCENE - 2;
+	grid[h-5][j.get_x()-1] = '<';
+	grid[h-5][j.get_x()] = 'o';
+	grid[h-5][j.get_x()+1] = '>';
 
-	grid[HEIGH_SCENE-4][j.get_x()] = '|';
-	grid[HEIGH_SCENE-4][j.get_x()-1] = '_';
+	grid[h-4][j.get_x()] = '|';
+	grid[h-4][j.get_x()-1] = '_';
 	
-	if(j.get_attribute() == 1) grid[HEIGH_SCENE-4][j.get_x()-2] = '\\';
-	else if(j.get_attribute() == 2) grid[HEIGH_SCENE-4][j.get_x()-2] = '|';
-	else grid[HEIGH_SCENE-3][j.get_x()-2] = '/';
+	if(j.get_attribute() == 1) grid[h-4][j.get_x()-2] = '\\';
+	else if(j.get_attribute() == 2) grid[h-4][j.get_x()-2] = '|';
+	else grid[h-3][j.get_x()-2] = '/';
 
-	grid[HEIGH_SCENE-3][j.get_x()] = '|';
-	grid[HEIGH_SCENE-2][j.get_x()] = '|';
-	grid[HEIGH_SCENE-1][j.get_x()] = '|';
-	grid[HEIGH_SCENE-1][j.get_x()+1] = '\\';
+	grid[h-3][j.get_x()] = '|';
+	grid[h-2][j.get_x()] = '|';
+	grid[h-1][j.get_x()] = '|';
+	grid[h-1][j.get_x()+1] = '\\';
 }
 
-void Scene::convert_player_l(std::vector<std::string>& grid, int x, int w, Joueur &j) {
+void Scene::convert_player_l(std::vector<std::string>& grid, int x, int w, Joueur &j, int jump) {
 	int new_x = (x * WIDTH_SCENE) / w;
 	j.set_x(new_x);
-	Scene::replace_player_l(grid, j);
+	Scene::replace_player_l(grid, j, jump);
 
 	/*
 
@@ -194,12 +195,12 @@ std::vector<std::string> Scene::convert_scene(std::string scene, Joueur &j1, Jou
 	for(int i=0; i<scene.length(); ++i) {
 		switch (scene[i]) {
 			case '1':
-				if(j1.get_dir() == 0) Scene::convert_player_r(lines, i, scene.length(), j1);
-				else Scene::convert_player_l(lines, i, scene.length(), j1);
+				if(j1.get_dir() == 0) Scene::convert_player_r(lines, i, scene.length(), j1, 1);
+				else Scene::convert_player_l(lines, i, scene.length(), j1, 1);
 				break;
 			case '2':
-				if(j2.get_dir() == 0) Scene::convert_player_r(lines, i, scene.length(), j2);
-				else Scene::convert_player_l(lines, i, scene.length(), j2);
+				if(j2.get_dir() == 0) Scene::convert_player_r(lines, i, scene.length(), j2, 1);
+				else Scene::convert_player_l(lines, i, scene.length(), j2, 1);
 				break;
 			case 'x':
 				Scene::convert_block(lines, i, scene.length());
@@ -208,16 +209,17 @@ std::vector<std::string> Scene::convert_scene(std::string scene, Joueur &j1, Jou
 		}
 	
 	}
-
 	return lines;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 
 void Scene::remove_last_position(std::vector<std::string>& grid, Joueur jo) {
-	for(int i=1; i<6; ++i) {
+	for(int i=1; i<HEIGH_SCENE; ++i) {
 		for(int j=-2; j<3; ++j) {
-			grid[HEIGH_SCENE-i][jo.get_x()+j] = ' ';
+			if(grid[HEIGH_SCENE-i][jo.get_x()+j] != 'X') {
+				grid[HEIGH_SCENE-i][jo.get_x()+j] = ' ';
+			}
 		}
 	}
 
