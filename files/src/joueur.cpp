@@ -53,24 +53,16 @@ int Joueur::get_x() {
 
 int Joueur::move_right(std::vector<std::string> grid, int w, int h) {
     if((this->x + 1) < w-2) {
-        if(grid[h-1][(this->x + 1 + 2)] == ' ') {
-            this->x += 1;
-            return 0;
-        }
-        return 1;
-    }
-    return 1;
+        if(grid[h-1][(this->x + 1 + 2)] == ' ') return 0;
+        else return 1;
+    } return 1;
 }
 
 int Joueur::move_left(std::vector<std::string> grid, int w, int h) {
     if((this->x - 1) > 2) {
-        if(grid[h-1][(this->x - 1 - 2)] == ' ') {
-            this->x -= 1;
-            return 0;
-        }
-        return 1;
-    }
-    return 1;
+        if(grid[h-1][(this->x - 1 - 2)] == ' ') return 0;
+        else return 1;
+    } return 1;
 }
 
 int Joueur::get_movement_speed() {

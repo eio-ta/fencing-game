@@ -49,6 +49,7 @@ std::vector<char> Jeu::print_menu() {
 void Jeu::move_right(std::vector<std::string> &grid, Joueur &j) {
     if(j.move_right(grid, WIDTH_SCENE, HEIGH_SCENE) == 0) {
         sc.remove_last_position(grid, j);
+        j.set_x(j.get_x()+1);
         sc.replace_player_r(grid, j);
     }
 }
@@ -56,6 +57,7 @@ void Jeu::move_right(std::vector<std::string> &grid, Joueur &j) {
 void Jeu::move_left(std::vector<std::string> &grid, Joueur &j) {
     if(j.move_left(grid, WIDTH_SCENE, HEIGH_SCENE) == 0) {
         sc.remove_last_position(grid, j);
+        j.set_x(j.get_x()-1);
         sc.replace_player_l(grid, j);
     }
 }
@@ -65,7 +67,7 @@ void Jeu::game_start(Joueur j1, Joueur j2, std::string scene) {
     std::vector<std::string> grid = sc.convert_scene(scene, j1, j2);
     sc.print_scene(grid, j1, j2);
 
-    while(true) {
+    while(true){
         std::vector<char> mov1 {'d', 'q', '\033'};
         char choice = inter.make_choice(mov1);
         switch(choice) {
@@ -111,7 +113,7 @@ void Jeu::start() {
     std::vector<char> choice = Jeu::print_menu();
 
     // CHOISIR LA SCENE
-    std::string scene = "____1_____x______2___";
+    std::string scene = "____1___________2___";
     if(choice[1] == '2') {
         scene = sc.load_a_scene("");
 

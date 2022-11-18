@@ -217,12 +217,8 @@ std::vector<std::string> Scene::convert_scene(std::string scene, Joueur &j1, Jou
 void Scene::remove_last_position(std::vector<std::string>& grid, Joueur jo) {
 	for(int i=1; i<6; ++i) {
 		for(int j=-2; j<3; ++j) {
-			if(grid[HEIGH_SCENE-i][jo.get_x()+j] != 'X') {
-				grid[HEIGH_SCENE-i][jo.get_x()+j] = ' ';
-			}
+			grid[HEIGH_SCENE-i][jo.get_x()+j] = ' ';
 		}
 	}
-	grid[HEIGH_SCENE-3][jo.get_x()+3] = ' ';
-	grid[HEIGH_SCENE-3][jo.get_x()-3] = ' ';
 
 }
