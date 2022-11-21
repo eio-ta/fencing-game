@@ -118,11 +118,11 @@ void Scene::replace_player_r(std::vector<std::string>& grid, Joueur j, int jump)
 	grid[h-5][j.get_x()+1] = '>';
 
 	grid[h-4][j.get_x()] = '|';
-	grid[h-4][j.get_x()+1] = '_';
+	grid[h-4][j.get_x()+1] = '\\';
 
-	if(j.get_attribute() == 1) grid[h-4][j.get_x()+2] = '/';
+	if(j.get_attribute() == 1) grid[h-4][j.get_x()+2] = '_';
 	else if(j.get_attribute() == 2) grid[h-4][j.get_x()+2] = '|';
-	else grid[h-3][j.get_x()+2] = '\\';
+	else grid[h-4][j.get_x()+2] = '/';
 
 	grid[h-3][j.get_x()] = '|';
 	grid[h-2][j.get_x()] = '|';
@@ -138,7 +138,7 @@ void Scene::convert_player_r(std::vector<std::string>& grid, int x, int w, Joueu
 	/*
 
 	<o>
-	 |_/
+	 |\/
 	 |
 	 |
 	/|
@@ -154,11 +154,11 @@ void Scene::replace_player_l(std::vector<std::string>& grid, Joueur j, int jump)
 	grid[h-5][j.get_x()+1] = '>';
 
 	grid[h-4][j.get_x()] = '|';
-	grid[h-4][j.get_x()-1] = '_';
+	grid[h-4][j.get_x()-1] = '/';
 	
-	if(j.get_attribute() == 1) grid[h-4][j.get_x()-2] = '\\';
+	if(j.get_attribute() == 1) grid[h-4][j.get_x()-2] = '_';
 	else if(j.get_attribute() == 2) grid[h-4][j.get_x()-2] = '|';
-	else grid[h-3][j.get_x()-2] = '/';
+	else grid[h-4][j.get_x()-2] = '\\';
 
 	grid[h-3][j.get_x()] = '|';
 	grid[h-2][j.get_x()] = '|';

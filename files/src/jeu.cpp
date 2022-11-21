@@ -27,7 +27,7 @@ std::vector<char> Jeu::print_menu() {
     char c2 = 0;
     char c3 = 0;
 
-    //menu.loading_bar();
+    // menu.loading_bar();
 
     c1 = Jeu::first_menu();
     c2 = Jeu::second_menu(c1);
@@ -48,6 +48,7 @@ std::vector<char> Jeu::print_menu() {
 
 void Jeu::move_right(std::vector<std::string> &grid, Joueur &j) {
     if(j.move_right(grid, WIDTH_SCENE, HEIGH_SCENE) == 0) {
+        j.set_dir(0);
         sc.remove_last_position(grid, j);
         j.set_x(j.get_x()+1);
         sc.replace_player_r(grid, j, 1);
@@ -56,6 +57,7 @@ void Jeu::move_right(std::vector<std::string> &grid, Joueur &j) {
 
 void Jeu::move_left(std::vector<std::string> &grid, Joueur &j) {
     if(j.move_left(grid, WIDTH_SCENE, HEIGH_SCENE) == 0) {
+        j.set_dir(1);
         sc.remove_last_position(grid, j);
         j.set_x(j.get_x()-1);
         sc.replace_player_l(grid, j, 1);
@@ -64,6 +66,7 @@ void Jeu::move_left(std::vector<std::string> &grid, Joueur &j) {
 
 void Jeu::jump_right(std::vector<std::string> &grid, Joueur &j, Joueur j2) {
     if(j.jump_right(grid, WIDTH_SCENE, HEIGH_SCENE) == 0) {
+        j.set_dir(0);
         sc.remove_last_position(grid, j);
         j.set_x(j.get_x()+4);
         sc.replace_player_r(grid, j, 0);
@@ -85,6 +88,7 @@ void Jeu::jump_right(std::vector<std::string> &grid, Joueur &j, Joueur j2) {
 
 void Jeu::jump_left(std::vector<std::string> &grid, Joueur &j, Joueur j2) {
     if(j.jump_left(grid, WIDTH_SCENE, HEIGH_SCENE) == 0) {
+        j.set_dir(1);
         sc.remove_last_position(grid, j);
         j.set_x(j.get_x()-4);
         sc.replace_player_l(grid, j, 0);
@@ -102,46 +106,74 @@ void Jeu::jump_left(std::vector<std::string> &grid, Joueur &j, Joueur j2) {
         sc.remove_last_position(grid, j);
         sc.replace_player_l(grid, j, 1);
     }
-    
 }
 
+void Jeu::attack(std::vector<std::string> &grid, Joueur &j1, Joueur j2) {
+    j1.set_attribute(1);
+    sc.remove_last_position(grid, j1);
+    if(j1.get_dir() == 0) sc.replace_player_r(grid, j1, 1);
+    else sc.replace_player_l(grid, j1, 1);
+    system(CLEAN_SCREEN);
+    sc.print_scene(grid, j1, j2);
+    sleep((float) (j1.get_attacking_speed() / (float) FRAME_PER_SECONDS));
+
+    // TODO : COMPTER LES POINTS
+    std::cout << j1.attack(j2) << std::endl;
+
+    j1.set_attribute(3);
+    sc.remove_last_position(grid, j1);
+    if(j1.get_dir() == 0) sc.replace_player_r(grid, j1, 1);
+    else sc.replace_player_l(grid, j1, 1);
+}
+
+void Jeu::block(std::vector<std::string> &grid, Joueur &j1, Joueur j2) {
+    j1.set_attribute(2);
+    sc.remove_last_position(grid, j1);
+    if(j1.get_dir() == 0) sc.replace_player_r(grid, j1, 1);
+    else sc.replace_player_l(grid, j1, 1);
+    system(CLEAN_SCREEN);
+    sc.print_scene(grid, j1, j2);
+    sleep((float) ((float) BLOCKING_TIME / (float) FRAME_PER_SECONDS));
+
+    j1.set_attribute(3);
+    sc.remove_last_position(grid, j1);
+    if(j1.get_dir() == 0) sc.replace_player_r(grid, j1, 1);
+    else sc.replace_player_l(grid, j1, 1);
+}
 
 void Jeu::game_start(Joueur j1, Joueur j2, std::string scene) {
     std::vector<std::string> grid = sc.convert_scene(scene, j1, j2);
     sc.print_scene(grid, j1, j2);
 
     while(true){
-        std::vector<char> v {'d', 'q', 'a', 'e', 'l', 'm', '\033'};
+        std::vector<char> v {'d', 'q', 'a', 'e', 'z', 's', 'l', 'm', 'o', 'p', '\033'};
         char choice = inter.make_choice(v);
         switch(choice) {
             case 'd':
-                Jeu::move_right(grid, j1);
                 sleep((float) (j1.get_movement_speed() / (float) FRAME_PER_SECONDS));
+                Jeu::move_right(grid, j1);
                 break;
             case 'q':
-                Jeu::move_left(grid, j1);
                 sleep((float) (j1.get_movement_speed() / (float) FRAME_PER_SECONDS));
+                Jeu::move_left(grid, j1);
                 break;
             case 'e':
-                Jeu::jump_right(grid, j1, j2);
                 sleep((float) (j1.get_movement_speed() / (float) FRAME_PER_SECONDS));
+                Jeu::jump_right(grid, j1, j2);
                 break;
             case 'a':
+                sleep((float) (j1.get_movement_speed() / (float) FRAME_PER_SECONDS));
                 Jeu::jump_left(grid, j1, j2);
+                break;
+            case 'z':
                 sleep((float) (j1.get_movement_speed() / (float) FRAME_PER_SECONDS));
+                Jeu::attack(grid, j1, j2);
                 break;
-            
-
-
-            
-            case 'm':
-                Jeu::jump_right(grid, j2, j1);
+            case 's':
                 sleep((float) (j1.get_movement_speed() / (float) FRAME_PER_SECONDS));
+                Jeu::block(grid, j1, j2);
                 break;
-            case 'l':
-                Jeu::jump_left(grid, j2, j1);
-                sleep((float) (j2.get_movement_speed() / (float) FRAME_PER_SECONDS));
-                break;
+
             case '\033':
                 choice = getchar();
                 choice = getchar();
@@ -156,6 +188,22 @@ void Jeu::game_start(Joueur j1, Joueur j2, std::string scene) {
                         break;
                     default: break;
                 }
+                break;
+            case 'm':
+                Jeu::jump_right(grid, j2, j1);
+                sleep((float) (j1.get_movement_speed() / (float) FRAME_PER_SECONDS));
+                break;
+            case 'l':
+                Jeu::jump_left(grid, j2, j1);
+                sleep((float) (j2.get_movement_speed() / (float) FRAME_PER_SECONDS));
+                break;
+            case 'o':
+                Jeu::attack(grid, j2, j1);
+                sleep((float) (j2.get_movement_speed() / (float) FRAME_PER_SECONDS));
+                break;
+            case 'p':
+                Jeu::block(grid, j2, j1);
+                sleep((float) (j2.get_movement_speed() / (float) FRAME_PER_SECONDS));
                 break;
             default: break;
         }
@@ -188,12 +236,14 @@ void Jeu::start() {
             std::cin >> filename;
         }
         scene = sc.load_a_scene(filename);
+
+        // menu.loading_bar();
     }
 
     // CHOISIR LES PERSONNAGES
     Joueur j1;
     Joueur j2;
-    j2.set_dir();
+    j2.set_dir(1);
 
     Jeu::game_start(j1, j2, scene);
 }
