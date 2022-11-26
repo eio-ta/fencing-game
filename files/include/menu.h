@@ -12,19 +12,16 @@
 #endif
 
 #define WIDTH_MENU 65
+#define HEIGH_MENU 10
 
-class Menu {
-    public:
-        void separator();
-        void text_center(std::string);
-        void print_first_line(std::string);
+void separator();
+void text_center(std::string);
+void print_first_line(std::string);
 
-        void loading_bar();
+void loading_bar();
 
-        std::vector<char> first_menu();
-        std::vector<char> choose_number_player();
-        std::vector<char> choose_your_scene();
-};
-
+std::vector<char> first_menu();
+std::vector<char> choose_number_player();
+std::vector<char> choose_your_scene();
 
 #endif // MENU_H

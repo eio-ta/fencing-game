@@ -1,6 +1,6 @@
 #include "../include/menu.h"
 
-void Menu::separator() {
+void separator() {
     std::string str2 = "";
     int size = WIDTH_MENU;
     for(int i=0; i<size; ++i) {
@@ -9,7 +9,7 @@ void Menu::separator() {
     std::cout << str2 << std::endl << std::endl;
 }
 
-void Menu::text_center(std::string str) {
+void text_center(std::string str) {
     int spacing = (WIDTH_MENU - str.length()) / 2;
     for(int i=0; i<spacing; ++i) {
         std::cout << " ";
@@ -17,15 +17,15 @@ void Menu::text_center(std::string str) {
     std::cout << str << std::endl;
 }
 
-void Menu::print_first_line(std::string str) {
+void print_first_line(std::string str) {
     std::cout << std::endl << std::endl;
-    Menu::text_center(str);
+    text_center(str);
     std::cout << std::endl;
-    Menu::separator();
+    separator();
     std::cout << std::endl;
 }
 
-void Menu::loading_bar() {
+void loading_bar() {
     std::cout << std::endl << std::endl << "  LOADING : ";
     for(int i=0; i<7; ++i) {
         std::cout << "." << std::flush;
@@ -36,37 +36,35 @@ void Menu::loading_bar() {
     system(CLEAN_SCREEN);
 }
 
-std::vector<char> Menu::first_menu() {
-    Menu::print_first_line("Cliquez sur le bouton correspondant pour faire votre choix.");
+std::vector<char> first_menu() {
+    print_first_line("Cliquez sur le bouton correspondant pour faire votre choix.");
 
-    Menu::text_center("MENU DU JEU :");
+    text_center("Menu du jeu :");
     std::cout << std::endl;
 
-    Menu::text_center("1 - PARTIE SIMPLE");
-    Menu::text_center("2 - PARTIE PERSONNALISÉE");
-    Menu::text_center("3 - CHARGER UNE PARTIE AVEC UN FICHIER");
+    text_center("1 - Partie simple");
+    text_center("2 - Partie personnalisée");
+    text_center("3 - Charger une partie avec un fichier");
     std::cout << std::endl;
 
-    Menu::separator();
-    std::cout << "Votre réponse : ";
-
+    separator();
+    
     std::vector<char> v {'1', '2', '3'};
     return v;
 }
 
-std::vector<char> Menu::choose_your_scene() {
-    Menu::print_first_line("Cliquez sur le bouton correspondant pour faire votre choix.");
+std::vector<char> choose_your_scene() {
+    print_first_line("Cliquez sur le bouton correspondant pour faire votre choix.");
     
-    Menu::text_center("MENU DU JEU :");
+    text_center("Menu du jeu :");
     std::cout << std::endl;
 
-    Menu::text_center("1 - SCÈNE PAR DÉFAUT");
-    Menu::text_center("2 - CHARGER UNE SCÈNE AVEC UN FICHIER");
-    Menu::text_center("3 - RETOUR");
+    text_center("1 - Scène par défaut");
+    text_center("2 - Charger une scène avec un fichier");
+    text_center("3 - Retour");
     std::cout << std::endl;
 
-    Menu::separator();
-    std::cout << "Votre réponse : ";
+    separator();
 
     std::vector<char> v {'1', '2', '3'};
     return v;
