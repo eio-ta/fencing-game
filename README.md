@@ -1,1 +1,87 @@
+# Projet PA 2022 : Fencing game
 
+
+
+## Sommaire
+1. [Introduction et informations](README.md#introduction-et-informations)
+2. [Fonctionnalités](README.md#fonctionnalités)
+3. [Compilation, exécution et arguments possibles](README.md#compilation-execution-et-arguments-possibles)
+4. [Découpage modulaire](README.md#découpage-modulaire)
+5. [Organisation de travail](README.md#organisation-de-travail)
+
+-------------------------------------------------------
+
+
+
+## Introduction et informations
+**Informations généraux**
+- Le sujet du projet : [projet.pdf](...)
+
+**Identifiants et membres du groupe**
+1. TANG Elody, @eio-ta, 21953199
+
+
+
+## Fonctionnalités
+
+Ce projet est basé sur un jeu simple d'escrime. Dans ce jeu, un joueur peut marquer des points en entrant en contact avec l'adversaire grâce à son épée.
+
+
+**Fonctionnalités principales :**
+
+1. Le programme est capable de permettre à deux joueurs locaux de jouer au jeu avec un écran de terminal.
+2. Le nombre d'images par seconde est modifiable avec une option.
+3. Le jeu se déroule dans une scène qui peut être modifiée par le joueur par l'intermédiaire de fichiers. La scène peut être lu avec l'extension `.ffscene`. Le fichier doit contenir une ligne avec les caractères suivants : `1` (le premier joueur), `2` (le deuxième joueurs), `_` (le sol) et `x` (un obstacle).
+4. Chaque joueur possède les attributs suivants : `movement_speed` (vitesse de mouvement), `attacking_speed` (vitesse d'attaque), `attacking_range` (portée d'attaque), `defending_range` (portée de défense) et `block_time` (durée du blocage).
+4. Pendant un combat, le joueur peut :
+    - se déplacer vers la gauche.
+    - se déplacer vers la droite.
+    - sauter par dessus un obstacle vers la droite.
+    - sauter par dessus un obstacle vers la gauche.
+    - attaquer.
+    - bloquer une attaque.
+
+
+**Fonctionnalités secondaires :**
+
+1. Un mode de jeu simple (avec une scène par défaut) a été rajoutée.
+2. Une partie s'arrête au moment où l'un des joueurs a atteint trois points.
+
+
+
+## Compilation execution et arguments possibles
+
+
+**Compilation et éxécution**
+
+Il existe une méthode simple pour compiler et exécuter le programme "Fencing game" :
+- `make` sans argument lancera la compilation du jeu.
+- `./output <ARG1>` lancera le programme avec l'argument utilisé.
+- `make clean` pour effacer les fichiers produits par `make` lors de sa compilation.
+
+
+**Les arguments possibles lors de l'exécution**
+
+**Pour `ARG1`**
+
+Il suffit de mettre un `[CHIFFRE]` pour ajouter le nombre d'images par secondes.
+
+
+
+## Découpage Modulaire
+
+
+**Schéma et arborescence des fichiers et des modules**
+
+![SCHEMA MODULES](...)
+
+
+**Description des modules et des fichiers présents**
+
+
+## Organisation de travail
+
+
+**Brève chronologie du travail effectué**
+
+![CHRONO 1](...)
