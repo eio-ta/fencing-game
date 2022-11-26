@@ -6,21 +6,29 @@
 #include "menu.h"
 #include "joueur.h"
 
-/* Charger une scène avec un fichier */
 
+
+/* CHARGER UNE SCENE ************************************************************************/
+
+/* Compte le nombre d'occurence dans une scène
+* Retourne 0 s'il y a bien deux joueurs
+*/
 int count_occurence(std::string);
+
+/* Récupère une scène à partir d'un fichier */
 std::string load_a_scene(std::string);
+
+/* Retourne 0 si une scène est valide */
 int is_valid_scene(std::string);
 
-
-/* Convertir une scène à partir d'un string */
-
+/* Convertie une scène en un vecteur pour le terminal */
 std::vector<std::string> convert_scene(std::string, Joueur &, Joueur &);
 
 /* Afficher une scène */
-
 void print_scene(std::vector<std::string>, Joueur, Joueur);
 
 
+
+/********************************************************************************************/
 
 #endif // SCENE_H

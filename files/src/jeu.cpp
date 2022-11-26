@@ -10,7 +10,7 @@ char print_first_menu() {
     return c1;
 }
 
-char second_menu(char c1) {
+char print_second_menu(char c1) {
     std::vector<char> v = choose_your_scene();
     char c2 = make_choice(v);
     if(c2 == '1') {
@@ -26,10 +26,10 @@ std::vector<char> print_menu() {
     char c3 = 0;
     // loading_bar();
     c1 = print_first_menu();
-    c2 = second_menu(c1);
+    c2 = print_second_menu(c1);
     while(c2 == '3') {
         c1 = print_first_menu();
-        c2 = second_menu(c1);
+        c2 = print_second_menu(c1);
     }
     std::vector<char> v {c1, c2};
     return v;
