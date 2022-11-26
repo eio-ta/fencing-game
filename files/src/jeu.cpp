@@ -1,8 +1,10 @@
 #include "../include/jeu.h"
 
 
-/* AFFICHER LE MENU ET FAIRE SON CHOIX ******************************************************/
 
+/* AFFICHE LE MENU **************************************************************************/
+
+/* Affiche le premier menu */
 char print_first_menu() {
     std::vector<char> v = first_menu();
     char c1 = make_choice(v);
@@ -10,6 +12,8 @@ char print_first_menu() {
     return c1;
 }
 
+
+/* Affiche le second menu */
 char print_second_menu(char c1) {
     std::vector<char> v = choose_your_scene();
     char c2 = make_choice(v);
@@ -20,6 +24,8 @@ char print_second_menu(char c1) {
     return c2;
 }
 
+
+/* Retourne les choix choisis par l'utilisateur pendant le menu */
 std::vector<char> print_menu() {
     char c1 = 0;
     char c2 = 0;
@@ -37,8 +43,12 @@ std::vector<char> print_menu() {
 
 
 
-/* Que le jeu commence ! ********************************************************************/
+/* ÉVÈVENEMENTS LIÉS AVEC LES MOUVEMENTS DES JOUEURS ****************************************/
 
+/* Réalise les mouvements des joueurs
+* Retourne 0 si le mouvement a été réalisé
+           1 si le mouvement n'a pas été réalisé
+*/
 int player_move_check1(char choice, int fps, Joueur &j, int &j_move_frame, char &j_move, int &j_effect) {
     switch(choice) {
         case 'd':
@@ -92,7 +102,13 @@ int player_move_check1(char choice, int fps, Joueur &j, int &j_move_frame, char 
     }
 }
 
-// 0 = mouvement fini, 1 = mouvement pas fini, -1 = pas de mouvement, 2 = partie finie
+
+/* Réalise les mouvements des joueurs
+* Retourne 0 si le mouvement est terminé
+           1 si le mouvement doit continuer
+          -1 si le mouvement ne s'est pas réalisé
+           2 si la partie est terminée
+*/
 int player_move_check2(int nb, int &fps, Joueur &j, Joueur &j2, char &j_move, int &j_effect, std::vector<std::string> &grid) {
     if(j_move == 'd') {
         j.move_right(grid, WIDTH_MENU, HEIGH_MENU);
@@ -128,7 +144,7 @@ int player_move_check2(int nb, int &fps, Joueur &j, Joueur &j2, char &j_move, in
         }
     } else if(j_move == 'z') {
         if(j_effect == 0) {
-            j.move_attack_pos1(grid, WIDTH_MENU, HEIGH_MENU);
+            j.player_attack(grid, WIDTH_MENU, HEIGH_MENU);
             j_effect = 1;
             return 1;
         } else {
@@ -138,17 +154,17 @@ int player_move_check2(int nb, int &fps, Joueur &j, Joueur &j2, char &j_move, in
             if(j.get_point() != tmp) {
                 return print_win(nb, j, j2);
             }
-            j.move_attack_pos2(grid, WIDTH_MENU, HEIGH_MENU);
+            j.player_rest(grid, WIDTH_MENU, HEIGH_MENU);
             return 0;
         }
     } else if(j_move == 's') {
         if(j_effect > 0) {
-            j.move_block(grid, WIDTH_MENU, HEIGH_MENU);
+            j.player_block(grid, WIDTH_MENU, HEIGH_MENU);
             j_effect -= 1;
             std::cout << j_effect << std::endl;
             return 1;
         } else {
-            j.move_attack_pos2(grid, WIDTH_MENU, HEIGH_MENU);
+            j.player_rest(grid, WIDTH_MENU, HEIGH_MENU);
             std::cout << j_effect << std::endl;
             return 0;
         }
@@ -157,6 +173,8 @@ int player_move_check2(int nb, int &fps, Joueur &j, Joueur &j2, char &j_move, in
     }
 }
 
+
+/* Initialise les attributs d'un joueur */
 void movement_finished(int &j_move_frame, char &j_move, int &j_effect, Joueur &j) {
     j_move_frame = -1;
     j_move = ' ';
@@ -164,8 +182,10 @@ void movement_finished(int &j_move_frame, char &j_move, int &j_effect, Joueur &j
     j.set_can_move(0);
 }
 
-int maybe_endgame(int fps, Joueur &j, Joueur &j2, int &j_move_frame, char &j_move, int &j_effect, std::vector<std::string> &grid) {
-    int move_f = player_move_check2(1, fps, j, j2, j_move, j_effect, grid);
+
+/* Vérifie si le jeu n'est pas terminé */
+int maybe_endgame(int nb, int fps, Joueur &j, Joueur &j2, int &j_move_frame, char &j_move, int &j_effect, std::vector<std::string> &grid) {
+    int move_f = player_move_check2(nb, fps, j, j2, j_move, j_effect, grid);
     if(move_f == 0) { // Le mouvement est fini, pas de gagnant
         movement_finished(j_move_frame, j_move, j_effect, j);
         return 1;
@@ -179,6 +199,11 @@ int maybe_endgame(int fps, Joueur &j, Joueur &j2, int &j_move_frame, char &j_mov
     }
 }
 
+
+
+/* LANCEMENT DU JEU *************************************************************************/
+
+/* Lancement du jeu */
 int game_start(Joueur &j1, Joueur &j2, std::string scene) {
     std::vector<std::string> grid = convert_scene(scene, j1, j2);
 
@@ -198,13 +223,13 @@ int game_start(Joueur &j1, Joueur &j2, std::string scene) {
         }
 
         if(j1_move_frame == fps) {
-            int tmp = maybe_endgame(fps, j1, j2, j1_move_frame, j1_move, j1_effect, grid);
+            int tmp = maybe_endgame(1, fps, j1, j2, j1_move_frame, j1_move, j1_effect, grid);
             if(tmp == 2) return 0; // Le jeu continue, mais gagnant
             if(tmp == 3) return 1; // Le jeu est terminé
         }
 
         if(j2_move_frame == fps) {
-            int tmp = maybe_endgame(fps, j2, j1, j2_move_frame, j2_move, j2_effect, grid);
+            int tmp = maybe_endgame(2, fps, j2, j1, j2_move_frame, j2_move, j2_effect, grid);
             if(tmp == 2) return 0; // Le jeu continue, mais gagnant
             if(tmp == 3) return 1; // Le jeu est terminé
         }
@@ -236,60 +261,45 @@ int game_start(Joueur &j1, Joueur &j2, std::string scene) {
             }
         }
 
-        usleep(10000 * FRAMES_PER_S);
+        usleep(1000000 / FRAMES_PER_S);
 
         system(CLEAN_SCREEN);
         print_scene(grid, j1, j2);
 
         fps += 1;
-        std::cout << "Frame : " << fps << std::endl;
+        std::cout << "Image : " << fps << std::endl;
     }
 
     return 1;
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+/* Lancement du menu */
 void start() {
     std::vector<char> choice = print_menu();
-    // std::vector<char> choice {'1', '1'};
 
-
-    /* Scène de combat */
+    // Chargement de la scène de combat
     std::string scene = "_____1_____2____";
     if(choice[1] == '2') {
         std::cout << "\r" << "Nom du fichier : ";
         std::string filename;
         std::cin >> filename;
-        while(!is_valid_scene(filename)) {
+        while(is_valid_scene(filename) != 0) {
             std::cout << "Mauvais fichier ! Donnez un bon chemin relatif : ";
             std::cin >> filename;
         }
-        
+        std::cout << filename << std::endl;
         scene = load_a_scene(filename);
 
         loading_bar();
     }
 
-    /* Configutation des joueurs */
+    // Configutation des joueurs
     Joueur j1;
     Joueur j2;
     j2.set_dir(1);
 
-
-    /* START GAME */
+    // Partie commencée
     int tmp = game_start(j1, j2, scene);
     std::cout << "FINI" << tmp << std::endl;
     while(tmp != 1) {

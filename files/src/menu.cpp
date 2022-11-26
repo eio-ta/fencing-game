@@ -1,5 +1,10 @@
 #include "../include/menu.h"
 
+
+
+/* FONCTIONS UTILTAIRES *********************************************************************/
+
+/* Affiche un séparateur */
 void separator() {
     std::string str2 = "";
     int size = WIDTH_MENU;
@@ -9,6 +14,8 @@ void separator() {
     std::cout << str2 << std::endl << std::endl;
 }
 
+
+/* Affiche un texte au centre de l'écran */
 void text_center(std::string str) {
     int spacing = (WIDTH_MENU - str.length()) / 2;
     for(int i=0; i<spacing; ++i) {
@@ -17,6 +24,8 @@ void text_center(std::string str) {
     std::cout << str << std::endl;
 }
 
+
+/* Affiche la première ligne d'un écran */
 void print_first_line(std::string str) {
     std::cout << std::endl << std::endl;
     text_center(str);
@@ -25,6 +34,8 @@ void print_first_line(std::string str) {
     std::cout << std::endl;
 }
 
+
+/* Affiche une barre de chargement */
 void loading_bar() {
     std::cout << std::endl << std::endl << "  LOADING : ";
     for(int i=0; i<5; ++i) {
@@ -36,6 +47,11 @@ void loading_bar() {
     system(CLEAN_SCREEN);
 }
 
+
+
+/* AFFICHAGE DES MENUS **********************************************************************/
+
+/* Retourne les choix possibles du premier menu */
 std::vector<char> first_menu() {
     print_first_line("Cliquez sur le bouton correspondant pour faire votre choix.");
 
@@ -53,6 +69,8 @@ std::vector<char> first_menu() {
     return v;
 }
 
+
+/* Retourne les choix possibles du troisième menu */
 std::vector<char> choose_your_scene() {
     print_first_line("Cliquez sur le bouton correspondant pour faire votre choix.");
     
@@ -69,3 +87,7 @@ std::vector<char> choose_your_scene() {
     std::vector<char> v {'1', '2', '3'};
     return v;
 }
+
+
+
+/********************************************************************************************/

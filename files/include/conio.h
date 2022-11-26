@@ -20,7 +20,6 @@ Copyright (C) 2013 by Carlos J. Pinto B.
 
 
 /* Retourne TRUE si l'utilisateur a pressé un bouton */
-
 int kbhit();
 
 

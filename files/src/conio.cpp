@@ -1,5 +1,8 @@
 #include "../include/conio.h"
 
+
+
+/* Retourne TRUE si l'utilisateur a pressé un bouton */
 int kbhit() {
     struct termios oldt, newt;
     int ch;

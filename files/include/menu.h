@@ -39,9 +39,6 @@ void loading_bar();
 /* Retourne les choix possibles du premier menu */
 std::vector<char> first_menu();
 
-/* Retourne les choix possibles du deuxième menu */
-std::vector<char> choose_number_player();
-
 /* Retourne les choix possibles du troisième menu */
 std::vector<char> choose_your_scene();
 

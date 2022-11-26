@@ -1,7 +1,12 @@
 #include "../include/scene.h"
 
-/* Charger une scène avec un fichier *********************************************************/
 
+
+/* CHARGER UNE SCENE ************************************************************************/
+
+/* Compte le nombre d'occurence dans une scène
+* Retourne 0 s'il y a bien deux joueurs
+*/
 int count_occurence(std::string scene) {
 	int c1 = 0;
 	int c2 = 0;
@@ -9,9 +14,12 @@ int count_occurence(std::string scene) {
 		if(scene[i] == '1') c1 += 1;
 		if(scene[i] == '2') c2 += 1;
 	}
-	return (c1 == 1 && c2 ==1);
+	if(c1 == 1 && c2 == 1) return 0;
+	else return 1;
 }
 
+
+/* Récupère une scène à partir d'un fichier */
 std::string load_a_scene(std::string filename) {
     std::ifstream in_stream;
 	in_stream.open(filename);
@@ -23,6 +31,8 @@ std::string load_a_scene(std::string filename) {
 	return line;
 }
 
+
+/* Retourne 0 si une scène est valide */
 int is_valid_scene(std::string filename) {
 	std::ifstream in_stream;
 	in_stream.open(filename);
@@ -32,21 +42,23 @@ int is_valid_scene(std::string filename) {
 		while(in_stream >> line) {
 			nb_line += 1;
 		}
-		if(nb_line != 1) return false;
+		std::cout << "test1";
+		if(nb_line != 1) return 1;
 		for(int i=0; i<line.length(); ++i) {
 			if(!(line[i] == '1' || line[i] == '2' || line[i] == 'x' || line[i] == '_')) {
+				std::cout << "test2";
 				return 1;
 			}
 		}
 		in_stream.close();
+		std::cout << "test3";
 		if(count_occurence(line) == 0) return 0;
 	}
 	return 1;
 }
 
 
-/* Charger une scène à partir d'un string ****************************************************/
-
+/* Convertie une scène en un vecteur pour le terminal */
 std::vector<std::string> convert_scene(std::string scene, Joueur &j1, Joueur &j2) {
 	std::vector<std::string> lines (HEIGH_MENU, "");
 	for(int i=0; i<HEIGH_MENU; ++i) {
@@ -88,8 +100,8 @@ std::vector<std::string> convert_scene(std::string scene, Joueur &j1, Joueur &j2
 	return lines;
 }
 
-/* Afficher une scène ************************************************************************/
 
+/* Afficher une scène */
 void print_scene(std::vector<std::string> lines, Joueur j1, Joueur j2) {
 	print_first_line("FIGHT !");
 
@@ -110,8 +122,14 @@ void print_scene(std::vector<std::string> lines, Joueur j1, Joueur j2) {
 	separator();
 }
 
+
+
 /* AFFICHAGE DES DIFFERENTS PANNEAUX ********************************************************/
 
+/* Affichage de l'écran du gagnant
+* Retourne 2 si la partie continue
+           3 sinon
+*/
 int print_win(int nb, Joueur j1, Joueur j2) {
 	system(CLEAN_SCREEN);
 	print_first_line("BRAVO !");
