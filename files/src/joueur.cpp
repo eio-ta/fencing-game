@@ -22,6 +22,7 @@ int Joueur::get_dir() { return this->dir; }
 void Joueur::set_dir(int a) { if(a==0 || a==1) this->dir = a; }
 
 int Joueur::get_point() { return this->point; }
+void Joueur::point_0() { this->point = 0; };
 
 int Joueur::get_movement_speed() { return this->movement_speed; }
 int Joueur::get_attack_speed() { return this->attacking_speed; }

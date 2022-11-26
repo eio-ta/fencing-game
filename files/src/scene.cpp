@@ -124,38 +124,4 @@ void print_scene(std::vector<std::string> lines, Joueur j1, Joueur j2) {
 
 
 
-/* AFFICHAGE DES DIFFERENTS PANNEAUX ********************************************************/
-
-/* Affichage de l'écran du gagnant
-* Retourne 2 si la partie continue
-           3 sinon
-*/
-int print_win(int nb, Joueur j1, Joueur j2) {
-	system(CLEAN_SCREEN);
-	print_first_line("BRAVO !");
-
-	std::string line_p;
-	if(nb == 1) {
-		line_p = "| " + std::to_string(j1.get_point()) + " | " + std::to_string(j2.get_point()) + " |";
-	} else {
-		line_p = "| " + std::to_string(j2.get_point()) + " | " + std::to_string(j1.get_point()) + " |";
-	}
-	text_center(line_p);
-	std::cout << std ::endl << std::endl;
-
-	text_center("Joueur " + std::to_string(nb) + " a gagné un point !");
-	std::cout << std ::endl << std::endl;
-	separator();
-	
-	if(j1.get_point() >= 3 || j2.get_point() >= 3) {
-		// TODO : JEU TERMINE
-		return 3;
-	}
-
-	loading_bar();
-	return 2;
-}
-
-
-
 /********************************************************************************************/

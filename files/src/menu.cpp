@@ -60,7 +60,7 @@ std::vector<char> first_menu() {
 
     text_center("1 - Partie simple");
     text_center("2 - Partie personnalisée");
-    text_center("3 - Charger une partie avec un fichier");
+    text_center("3 - Quitter");
     std::cout << std::endl;
 
     separator();
@@ -85,6 +85,51 @@ std::vector<char> choose_your_scene() {
     separator();
 
     std::vector<char> v {'1', '2', '3'};
+    return v;
+}
+
+
+/* Affichage de l'écran du gagnant
+* Retourne 2 si la partie continue
+           3 sinon
+*/
+int print_win(int nb, Joueur j1, Joueur j2) {
+	system(CLEAN_SCREEN);
+	print_first_line("BRAVO !");
+
+	std::string line_p;
+	if(nb == 1) {
+		line_p = "| " + std::to_string(j1.get_point()) + " | " + std::to_string(j2.get_point()) + " |";
+	} else {
+		line_p = "| " + std::to_string(j2.get_point()) + " | " + std::to_string(j1.get_point()) + " |";
+	}
+	text_center(line_p);
+	std::cout << std ::endl << std::endl;
+
+	text_center("Joueur " + std::to_string(nb) + " a gagné un point !");
+	std::cout << std ::endl << std::endl;
+	separator();
+
+    loading_bar();
+	
+	if(j1.get_point() >= 3 || j2.get_point() >= 3) return 3;
+	return 2;
+}
+
+
+/* Affichage du menu à la fin du jeu */
+std::vector<char> print_menu_endgame() {
+    system(CLEAN_SCREEN);
+	print_first_line("Fin du jeu !");
+
+    text_center("1 - Recommencer avec les mêmes paramètres");
+    text_center("2 - Revenir au menu");
+    std::cout << std::endl;
+    std::cout << std::endl;
+
+    separator();
+
+    std::vector<char> v {'1', '2'};
     return v;
 }
 

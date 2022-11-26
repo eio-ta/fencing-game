@@ -4,7 +4,6 @@
 #include <fstream>
 
 #include "menu.h"
-#include "joueur.h"
 
 
 
@@ -26,16 +25,6 @@ std::vector<std::string> convert_scene(std::string, Joueur &, Joueur &);
 
 /* Afficher une scène */
 void print_scene(std::vector<std::string>, Joueur, Joueur);
-
-
-
-/* AFFICHAGE DES DIFFERENTS PANNEAUX ********************************************************/
-
-/* Affichage de l'écran du gagnant
-* Retourne 2 si la partie continue
-           3 sinon
-*/
-int print_win(int, Joueur, Joueur);
 
 
 

@@ -5,6 +5,8 @@
 #include <unistd.h>
 #include <vector>
 
+#include "joueur.h"
+
 /* Définition de CLEAN_SCREEN */
 #ifdef _WIN32
     #define CLEAN_SCREEN "cls"
@@ -41,6 +43,15 @@ std::vector<char> first_menu();
 
 /* Retourne les choix possibles du troisième menu */
 std::vector<char> choose_your_scene();
+
+/* Affichage de l'écran du gagnant
+* Retourne 2 si la partie continue
+           3 sinon
+*/
+int print_win(int, Joueur, Joueur);
+
+/* Affichage du menu à la fin du jeu */
+std::vector<char> print_menu_endgame();
 
 
 

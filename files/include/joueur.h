@@ -66,6 +66,7 @@ class Joueur {
         void set_dir(int);
 
         int get_point();
+        void point_0();
 
         int get_movement_speed();
         int get_attack_speed();

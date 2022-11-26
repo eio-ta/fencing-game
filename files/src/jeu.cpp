@@ -30,11 +30,23 @@ std::vector<char> print_menu() {
     char c1 = 0;
     char c2 = 0;
     char c3 = 0;
+
     loading_bar();
     c1 = print_first_menu();
+
+    if(c1 == '3') {
+        std::vector<char> v {c1};
+        return v;
+    }
+
     c2 = print_second_menu(c1);
     while(c2 == '3') {
         c1 = print_first_menu();
+
+        if(c1 == '3') {
+        std::vector<char> v {c1};
+        return v;
+    }
         c2 = print_second_menu(c1);
     }
     std::vector<char> v {c1, c2};
@@ -203,8 +215,8 @@ int maybe_endgame(int nb, int fps, Joueur &j, Joueur &j2, int &j_move_frame, cha
 
 /* LANCEMENT DU JEU *************************************************************************/
 
-/* Lancement du jeu */
-int game_start(Joueur &j1, Joueur &j2, std::string scene) {
+/* Boucle principale du jeu */
+int play(Joueur &j1, Joueur &j2, std::string scene) {
     std::vector<std::string> grid = convert_scene(scene, j1, j2);
 
     int fps = 0;
@@ -274,41 +286,55 @@ int game_start(Joueur &j1, Joueur &j2, std::string scene) {
 }
 
 
-/* Lancement du menu */
-void start() {
-    std::vector<char> choice = print_menu();
-
-    // Chargement de la scène de combat
-    std::string scene = "_____1_____2____";
-    if(choice[1] == '2') {
-        std::cout << "\r" << "Nom du fichier : ";
-        std::string filename;
-        std::cin >> filename;
-        while(is_valid_scene(filename) != 0) {
-            std::cout << "Mauvais fichier ! Donnez un bon chemin relatif : ";
-            std::cin >> filename;
-        }
-        std::cout << filename << std::endl;
-        scene = load_a_scene(filename);
-
-        loading_bar();
-    }
-
-    // Configutation des joueurs
-    Joueur j1;
-    Joueur j2;
-    j2.set_dir(1);
-
-    // Partie commencée
-    int tmp = game_start(j1, j2, scene);
-    std::cout << "FINI" << tmp << std::endl;
+/* Lancement du jeu */
+void time_2_play(std::string scene, Joueur &j1, Joueur &j2) {
+    int tmp = play(j1, j2, scene);
     while(tmp != 1) {
         j1.update_player();
         j2.update_player();
         j2.set_dir(1);
-        tmp = game_start(j1, j2, scene);
-        std::cout << "FINI" << tmp << std::endl;
+        tmp = play(j1, j2, scene);
     }
+    std::vector<char> v = print_menu_endgame();
+    char c = make_choice(v);
+    if(c == '1') {
+        j1.point_0();
+        j2.point_0();
+        time_2_play(scene, j1, j2);
+    } else {
+        start();
+    }
+}
 
-    // TODO : FIN DU JEU
+
+/* Lancement du menu */
+void start() {
+    std::vector<char> choice = print_menu();
+    if(choice[0] == '3') {
+        exit(0);
+    } else {
+        // Chargement de la scène de combat
+        std::string scene = "_____1_____2____";
+        if(choice[1] == '2') {
+            std::cout << "\r" << "Nom du fichier : ";
+            std::string filename;
+            std::cin >> filename;
+            while(is_valid_scene(filename) != 0) {
+                std::cout << "Mauvais fichier ! Donnez un bon chemin relatif : ";
+                std::cin >> filename;
+            }
+            std::cout << filename << std::endl;
+            scene = load_a_scene(filename);
+
+            loading_bar();
+        }
+
+        // Configutation des joueurs
+        Joueur j1;
+        Joueur j2;
+        j2.set_dir(1);
+
+        // Partie commencée
+        time_2_play(scene, j1, j2);
+    }
 }

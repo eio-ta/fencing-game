@@ -46,8 +46,11 @@ int maybe_endgame(int, Joueur &, Joueur &, int &, char &, int &, std::vector<std
 
 /* LANCEMENT DU JEU *************************************************************************/
 
+/* Boucle principale du jeu */
+int play(Joueur &, Joueur &, std::string);
+
 /* Lancement du jeu */
-int game_start(Joueur &, Joueur &, std::string);
+void time_2_play(std::string, Joueur &, Joueur &);
 
 /* Lancement du menu */
 void start();
