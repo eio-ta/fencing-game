@@ -35,17 +35,19 @@ int player_move_check1(char, int, Joueur &, int &, char &, int &);
            1 si le mouvement doit continuer
           -1 si le mouvement ne s'est pas réalisé
 */
-int player_move_check2(int &, Joueur &, Joueur &, char &, int &, std::vector<std::string> &);
+int player_move_check2(int, int &, Joueur &, Joueur &, char &, int &, std::vector<std::string> &);
 
 /* Initialise les attributs d'un joueur */
-void movement_finished(int &, char &, int &, Joueur &); 
+void movement_finished(int &, char &, int &, Joueur &);
 
+/* Vérifie si le jeu n'est pas terminé */
+int maybe_endgame(int, Joueur &, Joueur &, int &, char &, int &, std::vector<std::string> &);
 
 
 /* LANCEMENT DU JEU *************************************************************************/
 
 /* Lancement du jeu */
-void game_start(Joueur, Joueur, std::string);
+int game_start(Joueur &, Joueur &, std::string);
 
 /* Lancement du menu */
 void start();

@@ -27,7 +27,7 @@ void print_first_line(std::string str) {
 
 void loading_bar() {
     std::cout << std::endl << std::endl << "  LOADING : ";
-    for(int i=0; i<7; ++i) {
+    for(int i=0; i<5; ++i) {
         std::cout << "." << std::flush;
         sleep(1);
     }

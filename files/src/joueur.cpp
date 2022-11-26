@@ -262,3 +262,10 @@ void Joueur::update_position(std::vector<std::string>& grid, int w, int h, int j
 		replace_player_l(grid, jump, h);
 	}
 }
+
+void Joueur::update_player() {
+    this->attribute = 3;
+	this->dir = 0;
+	this->x = -1;
+	this->can_move = 0;
+}

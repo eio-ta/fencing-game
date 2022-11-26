@@ -78,6 +78,11 @@ class Joueur {
 
         void remove_position(std::vector<std::string>&, int);
         void update_position(std::vector<std::string>&, int, int, int);
+
+
+        /* Mise à jour du joueur */
+
+        void update_player();
        
 };
 

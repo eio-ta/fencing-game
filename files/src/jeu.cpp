@@ -14,7 +14,7 @@ char print_second_menu(char c1) {
     std::vector<char> v = choose_your_scene();
     char c2 = make_choice(v);
     if(c2 == '1') {
-        // loading_bar();
+        loading_bar();
         system(CLEAN_SCREEN);
     } else if(c2 == '3') system(CLEAN_SCREEN);
     return c2;
@@ -24,7 +24,7 @@ std::vector<char> print_menu() {
     char c1 = 0;
     char c2 = 0;
     char c3 = 0;
-    // loading_bar();
+    loading_bar();
     c1 = print_first_menu();
     c2 = print_second_menu(c1);
     while(c2 == '3') {
@@ -93,7 +93,7 @@ int player_move_check1(char choice, int fps, Joueur &j, int &j_move_frame, char 
 }
 
 // 0 = mouvement fini, 1 = mouvement pas fini, -1 = pas de mouvement, 2 = partie finie
-int player_move_check2(int &fps, Joueur &j, Joueur &j2, char &j_move, int &j_effect, std::vector<std::string> &grid) {
+int player_move_check2(int nb, int &fps, Joueur &j, Joueur &j2, char &j_move, int &j_effect, std::vector<std::string> &grid) {
     if(j_move == 'd') {
         j.move_right(grid, WIDTH_MENU, HEIGH_MENU);
         return 0;
@@ -132,14 +132,12 @@ int player_move_check2(int &fps, Joueur &j, Joueur &j2, char &j_move, int &j_eff
             j_effect = 1;
             return 1;
         } else {
-            // int tmp = j.get_point();
-            // j.add_point(j2);
-
-            // if(j.get_point() != tmp) {
-            //     // JOUEUR A MARQUE
-            //     return 2;
-            // } 
-            //     // LE JEU CONTINUE
+            int tmp = j.get_point();
+            j.add_point(j2);
+            
+            if(j.get_point() != tmp) {
+                return print_win(nb, j, j2);
+            }
             j.move_attack_pos2(grid, WIDTH_MENU, HEIGH_MENU);
             return 0;
         }
@@ -166,7 +164,22 @@ void movement_finished(int &j_move_frame, char &j_move, int &j_effect, Joueur &j
     j.set_can_move(0);
 }
 
-void game_start(Joueur j1, Joueur j2, std::string scene) {
+int maybe_endgame(int fps, Joueur &j, Joueur &j2, int &j_move_frame, char &j_move, int &j_effect, std::vector<std::string> &grid) {
+    int move_f = player_move_check2(1, fps, j, j2, j_move, j_effect, grid);
+    if(move_f == 0) { // Le mouvement est fini, pas de gagnant
+        movement_finished(j_move_frame, j_move, j_effect, j);
+        return 1;
+    } else if(move_f == 1) { // Le jeu continue, pas de gagnant
+        j_move_frame = (j_move_frame + 1) % FRAMES_PER_S;
+        return 1;
+    } else if(move_f == 2) { // Le jeu continue, gagnant
+        return 2;
+    } else { // Le jeu est vraiment terminé
+        return 3;
+    }
+}
+
+int game_start(Joueur &j1, Joueur &j2, std::string scene) {
     std::vector<std::string> grid = convert_scene(scene, j1, j2);
 
     int fps = 0;
@@ -185,23 +198,16 @@ void game_start(Joueur j1, Joueur j2, std::string scene) {
         }
 
         if(j1_move_frame == fps) {
-            int move_f = player_move_check2(fps, j1, j2, j1_move, j1_effect, grid);
-            if(move_f == 0) {
-                movement_finished(j1_move_frame, j1_move, j1_effect, j1);
-            } else {
-                j1_move_frame = (j1_move_frame + 1) % FRAMES_PER_S;
-            } 
+            int tmp = maybe_endgame(fps, j1, j2, j1_move_frame, j1_move, j1_effect, grid);
+            if(tmp == 2) return 0; // Le jeu continue, mais gagnant
+            if(tmp == 3) return 1; // Le jeu est terminé
         }
 
         if(j2_move_frame == fps) {
-            int move_f = player_move_check2(fps, j2, j1, j2_move, j2_effect, grid);
-            if(move_f == 0) {
-                movement_finished(j2_move_frame, j2_move, j2_effect, j2);
-            } else {
-                j2_move_frame = (j1_move_frame + 1) % FRAMES_PER_S;
-            }
+            int tmp = maybe_endgame(fps, j2, j1, j2_move_frame, j2_move, j2_effect, grid);
+            if(tmp == 2) return 0; // Le jeu continue, mais gagnant
+            if(tmp == 3) return 1; // Le jeu est terminé
         }
-
 
         if(kbhit()) {
             char choice = getchar();
@@ -239,6 +245,7 @@ void game_start(Joueur j1, Joueur j2, std::string scene) {
         std::cout << "Frame : " << fps << std::endl;
     }
 
+    return 1;
 }
 
 
@@ -257,7 +264,7 @@ void game_start(Joueur j1, Joueur j2, std::string scene) {
 
 void start() {
     std::vector<char> choice = print_menu();
-    //std::vector<char> choice {'1', '1'};
+    // std::vector<char> choice {'1', '1'};
 
 
     /* Scène de combat */
@@ -273,7 +280,7 @@ void start() {
         
         scene = load_a_scene(filename);
 
-        // loading_bar();
+        loading_bar();
     }
 
     /* Configutation des joueurs */
@@ -283,5 +290,15 @@ void start() {
 
 
     /* START GAME */
-    game_start(j1, j2, scene);
+    int tmp = game_start(j1, j2, scene);
+    std::cout << "FINI" << tmp << std::endl;
+    while(tmp != 1) {
+        j1.update_player();
+        j2.update_player();
+        j2.set_dir(1);
+        tmp = game_start(j1, j2, scene);
+        std::cout << "FINI" << tmp << std::endl;
+    }
+
+    // TODO : FIN DU JEU
 }

@@ -29,6 +29,16 @@ void print_scene(std::vector<std::string>, Joueur, Joueur);
 
 
 
+/* AFFICHAGE DES DIFFERENTS PANNEAUX ********************************************************/
+
+/* Affichage de l'écran du gagnant
+* Retourne 2 si la partie continue
+           3 sinon
+*/
+int print_win(int, Joueur, Joueur);
+
+
+
 /********************************************************************************************/
 
 #endif // SCENE_H
