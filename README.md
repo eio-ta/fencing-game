@@ -15,7 +15,7 @@
 
 ## Introduction et informations
 **Informations généraux**
-- Le sujet du projet : [projet.pdf](...)
+- Le sujet du projet : [projet.pdf](https://github.com/eio-ta/project-pa/blob/main/Project.pdf)
 
 **Identifiants et membres du groupe**
 1. TANG Elody, @eio-ta, 21953199
@@ -46,6 +46,7 @@ Ce projet est basé sur un jeu simple d'escrime. Dans ce jeu, un joueur peut mar
 
 1. Un mode de jeu simple (avec une scène par défaut) a été rajoutée.
 2. Une partie s'arrête au moment où l'un des joueurs a atteint trois points.
+3. À la fin du jeu, les joueurs peuvent décider de recommencer une partie avec les mêmes paramètres ou de revenir sur le menu.
 
 
 
