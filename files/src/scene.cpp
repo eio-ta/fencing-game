@@ -34,25 +34,28 @@ std::string load_a_scene(std::string filename) {
 
 /* Retourne 0 si une scène est valide */
 int is_valid_scene(std::string filename) {
-	std::ifstream in_stream;
-	in_stream.open(filename);
-	if(in_stream.is_open()) {
-		std::string line;
-		int nb_line = 0;
-		while(in_stream >> line) {
-			nb_line += 1;
-		}
-		std::cout << "test1";
-		if(nb_line != 1) return 1;
-		for(int i=0; i<line.length(); ++i) {
-			if(!(line[i] == '1' || line[i] == '2' || line[i] == 'x' || line[i] == '_')) {
-				std::cout << "test2";
-				return 1;
+	if(filename.length() < 8) return 1;
+	std::string substr = filename.substr(filename.length()-8, filename.length()-1);
+	if(substr.compare(".ffscene") == 0) {
+		std::ifstream in_stream;
+		in_stream.open(filename);
+		if(in_stream.is_open()) {
+			std::string line;
+			int nb_line = 0;
+			while(in_stream >> line) {
+				nb_line += 1;
 			}
+			if(nb_line != 1) return 1;
+			for(int i=0; i<line.length(); ++i) {
+				if(!(line[i] == '1' || line[i] == '2' || line[i] == 'x' || line[i] == '_')) {
+					return 1;
+				}
+			}
+			in_stream.close();
+			if(count_occurence(line) == 0) return 0;
 		}
-		in_stream.close();
-		std::cout << "test3";
-		if(count_occurence(line) == 0) return 0;
+	} else {
+		return 1;
 	}
 	return 1;
 }

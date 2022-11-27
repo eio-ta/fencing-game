@@ -18,7 +18,7 @@ char print_second_menu(char c1) {
     std::vector<char> v = choose_your_scene();
     char c2 = make_choice(v);
     if(c2 == '1') {
-        loading_bar();
+        // loading_bar();
         system(CLEAN_SCREEN);
     } else if(c2 == '3') system(CLEAN_SCREEN);
     return c2;
@@ -31,7 +31,7 @@ std::vector<char> print_menu() {
     char c2 = 0;
     char c3 = 0;
 
-    loading_bar();
+    // loading_bar();
     c1 = print_first_menu();
 
     if(c1 == '3') {
@@ -325,7 +325,7 @@ void start(int frames_per_s) {
             std::cout << filename << std::endl;
             scene = load_a_scene(filename);
 
-            loading_bar();
+            // loading_bar();
         }
 
         // Configutation des joueurs

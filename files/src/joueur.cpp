@@ -106,7 +106,7 @@ void Joueur::jump_right_pos1(std::vector<std::string> &grid, int w, int h) {
 
 void Joueur::jump_right_pos2(std::vector<std::string> &grid, int w, int h) {
     remove_position(grid, h);
-	this->x += 3;
+	this->x += 4;
 	replace_player_r(grid, 0, h);
 }
 
@@ -137,7 +137,7 @@ void Joueur::jump_left_pos1(std::vector<std::string> &grid, int w, int h) {
 
 void Joueur::jump_left_pos2(std::vector<std::string> &grid, int w, int h) {
     remove_position(grid, h);
-	this->x -= 3;
+	this->x -= 4;
 	replace_player_l(grid, 0, h);
 }
 
