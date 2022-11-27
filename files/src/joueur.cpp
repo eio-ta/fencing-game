@@ -329,6 +329,14 @@ std::string Joueur::player_to_string() {
 	return res;
 }
 
+void Joueur::copy(Joueur j) {
+	this->attacking_range = j.attacking_range;
+	this->defending_range = j.defending_range;
+	this->point = j.point;
+	this->dir = j.dir;
+	this->x = j.x;
+}
+
 
 
 /*********************************************************************************************/

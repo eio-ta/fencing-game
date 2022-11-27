@@ -12,13 +12,16 @@
 char print_first_menu();
 
 /* Affiche le second menu */
-char print_second_menu(char);
+char print_second_menu();
+
+/* Affiche le troisième menu */
+char print_thrid_menu();
 
 /* Retourne les choix choisis par l'utilisateur pendant le menu */
 std::vector<char> print_menu();
 
 /* Affiche l'écran de la pause durant un jeu */
-int print_pause();
+char print_pause();
 
 
 

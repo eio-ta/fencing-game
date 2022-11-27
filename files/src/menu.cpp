@@ -25,6 +25,30 @@ void text_center(std::string str) {
 }
 
 
+std::vector<std::string> split_delim(std::string data, int delim) {
+    std::vector<std::string> res;
+	std::string attri = "";
+    char c = (delim == 1) ? '\n' : ' ';
+
+	for(int i=0; i<data.length(); ++i) {
+		if(data[i] != c) {
+			attri += data[i];
+        } else {
+        	res.push_back(attri);
+			attri = "";
+        }
+    }
+    return res;
+}
+
+
+
+
+
+
+
+
+
 /* Affiche la première ligne d'un écran */
 void print_first_line(std::string str) {
     std::cout << std::endl << std::endl;
@@ -70,17 +94,16 @@ std::vector<char> first_menu() {
 }
 
 
-/* Retourne les choix possibles du troisième menu */
-std::vector<char> choose_your_scene() {
+/* Retourne les choix possibles du deuxième menu */
+std::vector<char> second_menu() {
     print_first_line("Cliquez sur le bouton correspondant pour faire votre choix.");
     
     text_center("Menu du jeu :");
     std::cout << std::endl;
 
     text_center("1 - Scène par défaut");
-    text_center("2 - Choisir une scène");
-    text_center("3 - Charger une scène avec un fichier");
-    text_center("4 - Retour");
+    text_center("2 - Importer une scène");
+    text_center("3 - Retour");
     std::cout << std::endl;
 
     separator();
@@ -88,6 +111,54 @@ std::vector<char> choose_your_scene() {
     std::vector<char> v {'1', '2', '3'};
     return v;
 }
+
+
+/* Retourne les choix possibles du troisième menu */
+std::vector<char> third_menu() {
+    print_first_line("Cliquez sur le bouton correspondant pour faire votre choix.");
+    
+    text_center("Scène du jeu :");
+    std::cout << std::endl;
+
+    text_center("1 - ________1_______x________2___");
+    text_center("2 - ________1________________2___");
+    std::cout << std::endl;
+
+    separator();
+            
+    std::vector<char> v {'1', '2'};
+    return v;
+}
+
+int print_loading_game(int echo) {
+    int valid_data = 1;
+    std::ifstream in_stream;
+	in_stream.open("./data/data.txt");
+	if(in_stream.is_open()) {
+        valid_data = 0;
+		in_stream.close();
+	}
+
+    if(valid_data == 0) {
+        if(echo == 0) {
+            std::cout << "Données de jeu trouvées !" << std::endl;
+            loading_bar();
+        }
+        return 0;
+
+    } else {
+        if(echo == 0) {
+            std::cout << "Il n'y a pas de données de jeu..." << std::endl;
+            std::cout << "Choisissez une autre option." << std::endl;
+        }
+        return -1;
+    }
+}
+
+
+
+
+
 
 
 /* Affiche le menu de pause durant une partie */

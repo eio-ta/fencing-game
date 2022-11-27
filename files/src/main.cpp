@@ -6,6 +6,7 @@
 
 int main(int argc, char *argv[]) {
     int frames_per_second = 12;
+    
     if(argc == 2) {
         frames_per_second = atoi(argv[1]);
         if(frames_per_second == 0) {

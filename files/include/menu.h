@@ -4,6 +4,7 @@
 #include <iostream>
 #include <unistd.h>
 #include <vector>
+#include <fstream>
 
 #include "joueur.h"
 
@@ -28,6 +29,8 @@ void separator();
 /* Affiche un texte au centre de l'écran */
 void text_center(std::string);
 
+std::vector<std::string> split_delim(std::string, int);
+
 /* Affiche la première ligne d'un écran */
 void print_first_line(std::string);
 
@@ -41,8 +44,14 @@ void loading_bar();
 /* Retourne les choix possibles du premier menu */
 std::vector<char> first_menu();
 
+/* Retourne les choix possibles du deuxième menu */
+std::vector<char> second_menu();
+
 /* Retourne les choix possibles du troisième menu */
-std::vector<char> choose_your_scene();
+std::vector<char> third_menu();
+
+/* Menu pour charger une partie */
+int print_loading_game(int);
 
 /* Affiche le menu de pause durant une partie */
 std::vector<char> menu_pause();

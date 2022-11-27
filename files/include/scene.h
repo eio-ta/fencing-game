@@ -1,8 +1,6 @@
 #ifndef SCENE_H
 #define SCENE_H
 
-#include <fstream>
-
 #include "menu.h"
 
 
@@ -29,6 +27,8 @@ void print_scene(std::vector<std::string>, Joueur, Joueur);
 void save_a_game(std::string, Joueur &, Joueur &);
 
 std::string load_data_file();
+
+void load_data_file_to_player(Joueur &, std::string);
 
 
 /********************************************************************************************/

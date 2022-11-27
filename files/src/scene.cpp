@@ -153,6 +153,19 @@ std::string load_data_file() {
 }
 
 
+void load_data_file_to_player(Joueur &j, std::string data) {
+	std::vector<std::string> res_s = split_delim(data, 0);
+	std::vector<int> res_i;
+
+	for(std::vector<std::string>::iterator it = res_s.begin() ; it != res_s.end(); ++it) {
+        res_i.push_back(stoi(*it));
+    }
+    
+	Joueur tmp {res_i[0], res_i[1], res_i[2], res_i[3], res_i[4]};
+	j.copy(tmp);
+}
+
+
 
 
 

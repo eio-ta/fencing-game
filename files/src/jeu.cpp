@@ -8,20 +8,35 @@
 char print_first_menu() {
     std::vector<char> v = first_menu();
     char c1 = make_choice(v);
-    system(CLEAN_SCREEN);
+    if(c1 == '2') {
+        int tmp = print_loading_game(1);
+        if(tmp != 0) {
+            print_loading_game(0);
+            v.erase(v.begin()+1);
+            c1 = make_choice(v);
+            system(CLEAN_SCREEN);
+        }
+    } else {
+        system(CLEAN_SCREEN);
+    }
     return c1;
 }
 
 
 /* Affiche le second menu */
-char print_second_menu(char c1) {
-    std::vector<char> v = choose_your_scene();
+char print_second_menu() {
+    std::vector<char> v = second_menu();
     char c2 = make_choice(v);
-    if(c2 == '1') {
-        // loading_bar();
-        system(CLEAN_SCREEN);
-    } else if(c2 == '4') system(CLEAN_SCREEN);
+    if(c2 == '3' || c2 == '1') system(CLEAN_SCREEN);
     return c2;
+}
+
+/* Affiche le troisième menu */
+char print_thrid_menu() {
+    std::vector<char> v = third_menu();
+    char c3 = make_choice(v);
+    // loading_bar();
+    return c3;
 }
 
 
@@ -37,32 +52,33 @@ std::vector<char> print_menu() {
     if(c1 == '3' || c1 == '2') {
         std::vector<char> v {c1};
         return v;
-    }
+    } else {
+        c2 = print_second_menu();
 
-    c2 = print_second_menu(c1);
-    while(c2 == '4') {
-        c1 = print_first_menu();
-
-        if(c1 == '3' || c1 == '2') {
-            std::vector<char> v {c1};
-            return v;
+        while(c2 == '3') {
+            c1 = print_first_menu();
+            if(c1 == '3' || c1 == '2') {
+                std::vector<char> v {c1};
+                return v;
+            }
+            c2 = print_second_menu();
         }
 
-        c2 = print_second_menu(c1);
+        if(c2 == '1') {
+            c3 = print_thrid_menu();
+        }
+
+        std::vector<char> v {c1, c2, c3};
+        return v;
     }
-    std::vector<char> v {c1, c2};
-    return v;
 }
 
 
 /* Affiche l'écran de la pause durant un jeu */
-int print_pause() {
+char print_pause() {
     std::vector<char> v = menu_pause();
     char c = make_choice(v);
-
-    if(c == '1') return 1;
-    if(c == '2') return 2;
-    else return 3;
+    return c;
 }
 
 
@@ -264,7 +280,7 @@ int play(Joueur &j1, Joueur &j2, std::string scene, int frames_per_s) {
 
         if(kbhit()) {
             char choice = getchar();
-            int p;
+            char p;
             switch(choice) {
                 case 'd': player_move_check1('d', fps, j1, j1_move_frame, j1_move, j1_effect, frames_per_s); break;
                 case 'q': player_move_check1('q', fps, j1, j1_move_frame, j1_move, j1_effect, frames_per_s); break;
@@ -289,8 +305,7 @@ int play(Joueur &j1, Joueur &j2, std::string scene, int frames_per_s) {
 
                 case ' ':
                     p = print_pause();
-                    if(p == 2) return 2;
-                    if(p == 3) return 3;
+                    if(p != '1') return p - '0';
                     break;
                 default: break;
             }
@@ -314,14 +329,14 @@ void time_2_play(std::string scene, Joueur &j1, Joueur &j2, int frames_per_s) {
     int tmp = play(j1, j2, scene, frames_per_s);
     while(tmp != 1) {
         if(tmp == 2) {
-            loading_bar();
             save_a_game(scene, j1, j2);
-            system(CLEAN_SCREEN);
-            print_first_line("Les données du jeu ont été sauvegardées !");
+            text_center("Les données du jeu ont été sauvegardées !");
+            std::cout << std::endl;
             return;
         } else if(tmp == 3) {
             system(CLEAN_SCREEN);
             start(frames_per_s);
+            exit(0);
         } else {
             j1.update_player();
             j2.update_player();
@@ -345,60 +360,16 @@ void time_2_play(std::string scene, Joueur &j1, Joueur &j2, int frames_per_s) {
 void start(int frames_per_s) {
     std::vector<char> choice = print_menu();
 
-    if(choice[0] == '2') {
-        std::string data = load_data_file();
+    std::string scene;
+    Joueur j1;
+    Joueur j2;
+    j2.set_dir(1);
 
-        if(data == "") {
-            print_first_line("Il n'y a pas de données de jeu...");
-            text_center("Retour vers le menu.");
-            std::cout << std::endl;
-            loading_bar();
-            start(frames_per_s);
-            exit(0);
+    if(choice[0] == '1') {
+        if(choice[1] == '1') {
+            if(choice[2] == '1') scene = "________1_______x________2___";
+            else scene = "________1________________2___";
         } else {
-            std::vector<std::string> res;
-            std::string line = "";
-            for(int i=0; i<data.length(); ++i) {
-                if(data[i] != '\n') {
-                    line += data[i];
-                } else {
-                    res.push_back(line);
-                    line = "";
-                }
-            }
-
-            std::vector<int> res_j1;
-            std::vector<int> res_j2;
-            std::string attri = "";
-            for(int i=0; i<res[1].length(); ++i) {
-                if(res[1][i] != ' ') {
-                    attri += res[1][i];
-                } else {
-                    res_j1.push_back(stoi(attri));
-                    attri = "";
-                }
-            }
-
-            for(int i=0; i<res[2].length(); ++i) {
-                if(res[2][i] != ' ') {
-                    attri += res[2][i];
-                } else {
-                    res_j2.push_back(stoi(attri));
-                    attri = "";
-                }
-            }
-            
-            Joueur j1 {res_j1[0], res_j1[1], res_j1[2], res_j1[3], res_j1[4]};
-            Joueur j2 {res_j2[0], res_j2[1], res_j2[2], res_j2[3], res_j2[4]};
-
-            time_2_play(res[0], j1, j2, frames_per_s);
-        }
-    } else if(choice[0] == '3') {
-        exit(0);
-    } else {
-        // Chargement de la scène de combat
-        std::string scene = "_____1_____2____";
-        if(choice[1] == '3') {
             std::cout << "\r" << "Nom du fichier : ";
             std::string filename;
             std::cin >> filename;
@@ -406,39 +377,18 @@ void start(int frames_per_s) {
                 std::cout << "Mauvais fichier ! Donnez un bon chemin relatif : ";
                 std::cin >> filename;
             }
-            std::cout << filename << std::endl;
             scene = load_a_scene(filename);
-
-            // loading_bar();
-        } else if(choice[1] == '2') {
-            print_first_line("Cliquez sur le bouton correspondant pour faire votre choix.");
-
-            text_center("Scène du jeu :");
-            std::cout << std::endl;
-
-            text_center("1 - ________1_______x________2___");
-            text_center("2 - ________1________________2___");
-            std::cout << std::endl;
-
-            separator();
-            
-            std::vector<char> v {'1', '2'};
-            char c = make_choice(v);
-            if(c == '1') {
-                scene = "________1_______x________2___";
-            } else {
-                scene = "________1________________2___";
-            }
-
-            // loading_bar();
         }
-
-        // Configutation des joueurs
-        Joueur j1;
-        Joueur j2;
-        j2.set_dir(1);
-
-        // Partie commencée
-        time_2_play(scene, j1, j2, frames_per_s);
+        // loading_bar();
+    } else if(choice[0] == '2') {
+        print_loading_game(0);
+        std::vector<std::string> data = split_delim(load_data_file(), 1);
+        scene = data[0];
+        load_data_file_to_player(j1, data[1]);
+        load_data_file_to_player(j2, data[2]);
+    } else {
+        exit(0);
     }
+
+    time_2_play(scene, j1, j2, frames_per_s);
 }
