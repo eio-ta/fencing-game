@@ -78,8 +78,9 @@ std::vector<char> choose_your_scene() {
     std::cout << std::endl;
 
     text_center("1 - Scène par défaut");
-    text_center("2 - Charger une scène avec un fichier");
-    text_center("3 - Retour");
+    text_center("2 - Choisir une scène");
+    text_center("3 - Charger une scène avec un fichier");
+    text_center("4 - Retour");
     std::cout << std::endl;
 
     separator();

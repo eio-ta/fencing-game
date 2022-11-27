@@ -20,7 +20,7 @@ char print_second_menu(char c1) {
     if(c2 == '1') {
         // loading_bar();
         system(CLEAN_SCREEN);
-    } else if(c2 == '3') system(CLEAN_SCREEN);
+    } else if(c2 == '4') system(CLEAN_SCREEN);
     return c2;
 }
 
@@ -34,24 +34,20 @@ std::vector<char> print_menu() {
     // loading_bar();
     c1 = print_first_menu();
 
-    if(c1 == '2') {
-        std::vector<char> v {c1};
-        return v;
-    }
-
-    if(c1 == '3') {
+    if(c1 == '3' || c1 == '2') {
         std::vector<char> v {c1};
         return v;
     }
 
     c2 = print_second_menu(c1);
-    while(c2 == '3') {
+    while(c2 == '4') {
         c1 = print_first_menu();
 
-        if(c1 == '3') {
-        std::vector<char> v {c1};
-        return v;
-    }
+        if(c1 == '3' || c1 == '2') {
+            std::vector<char> v {c1};
+            return v;
+        }
+
         c2 = print_second_menu(c1);
     }
     std::vector<char> v {c1, c2};
@@ -402,7 +398,7 @@ void start(int frames_per_s) {
     } else {
         // Chargement de la scène de combat
         std::string scene = "_____1_____2____";
-        if(choice[1] == '2') {
+        if(choice[1] == '3') {
             std::cout << "\r" << "Nom du fichier : ";
             std::string filename;
             std::cin >> filename;
@@ -412,6 +408,27 @@ void start(int frames_per_s) {
             }
             std::cout << filename << std::endl;
             scene = load_a_scene(filename);
+
+            // loading_bar();
+        } else if(choice[1] == '2') {
+            print_first_line("Cliquez sur le bouton correspondant pour faire votre choix.");
+
+            text_center("Scène du jeu :");
+            std::cout << std::endl;
+
+            text_center("1 - ________1_______x________2___");
+            text_center("2 - ________1________________2___");
+            std::cout << std::endl;
+
+            separator();
+            
+            std::vector<char> v {'1', '2'};
+            char c = make_choice(v);
+            if(c == '1') {
+                scene = "________1_______x________2___";
+            } else {
+                scene = "________1________________2___";
+            }
 
             // loading_bar();
         }

@@ -50,7 +50,8 @@ Ce projet est basé sur un jeu simple d'escrime. Dans ce jeu, un joueur peut mar
 4. À la fin du jeu, les joueurs peuvent décider de recommencer une partie avec les mêmes paramètres ou de revenir sur le menu.
 5. Au début du jeu, le joueur peut choisir le nombre d'images par seconde avec une option sur la ligne de commande.
 6. Durant une partie, le joueur peut mettre le jeu en pause en cliquant sur `' '`. Il peut ainsi reprendre la partie en cours **ou** revenir sur la page du menu.
-7. Si les deux joueurs veulent quitter une partie en cours, ils peuvent sauvegarder la partie et rejouer plus tard. 
+7. Si les deux joueurs veulent quitter une partie en cours, ils peuvent sauvegarder la partie et rejouer plus tard.
+8. Les joueurs ont plusieurs choix possibles pour choisir leur scène de combat : soit avec le trasnfert de données avec un fichier, soit avec le menu.
 
 
 
