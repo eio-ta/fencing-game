@@ -8,6 +8,14 @@ int main(int argc, char *argv[]) {
     int frames_per_second = 12;
     if(argc == 2) {
         frames_per_second = atoi(argv[1]);
+        if(frames_per_second == 0) {
+            std::cout << "--------------------------------" << std::endl;
+            std::cout << "Erreur syntaxe de la commande : " << std::endl;
+            std::cout << "  - ./main <INTEGER> " << std::endl;
+            std::cout << "  - ./main " << std::endl;
+            std::cout << "--------------------------------" << std::endl;
+            return 0;
+        }
     } else if(argc > 2) {
         std::cout << "--------------------------------" << std::endl;
         std::cout << "Erreur syntaxe de la commande : " << std::endl;
