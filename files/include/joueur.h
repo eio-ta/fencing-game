@@ -56,7 +56,7 @@ class Joueur {
         /* CONSTRUCTEURS *********************************************************************/
 
         Joueur();
-        Joueur(int, int);
+        Joueur(int, int, int, int, int);
 
 
 
@@ -148,6 +148,8 @@ class Joueur {
 
         /* Remet un personnage les attributs d'orginie */
         void update_player();
+
+        std::string player_to_string();
 
 
 

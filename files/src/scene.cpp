@@ -126,5 +126,36 @@ void print_scene(std::vector<std::string> lines, Joueur j1, Joueur j2) {
 }
 
 
+void save_a_game(std::string scene, Joueur &j1, Joueur &j2) {
+	std::string l2 = j1.player_to_string();
+	std::string l3 = j2.player_to_string();
+
+    std::string input = scene + "\n" + l2 + "\n" + l3;
+    std::ofstream out("./data/data.txt");
+    out << input;
+    out.close();
+}
+
+std::string load_data_file() {
+	std::string res = "";
+    std::ifstream in_stream;
+	in_stream.open("./data/data.txt");
+	if(in_stream.is_open()) {
+		std::string line;
+		while(!in_stream.eof()) {
+			std::getline(in_stream, line);
+			res += line + "\n";
+		}
+		in_stream.close();
+		remove("./data/data.txt");
+	}
+	return res;
+}
+
+
+
+
+
+
 
 /********************************************************************************************/

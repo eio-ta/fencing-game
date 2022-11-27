@@ -34,6 +34,11 @@ std::vector<char> print_menu() {
     // loading_bar();
     c1 = print_first_menu();
 
+    if(c1 == '2') {
+        std::vector<char> v {c1};
+        return v;
+    }
+
     if(c1 == '3') {
         std::vector<char> v {c1};
         return v;
@@ -60,7 +65,8 @@ int print_pause() {
     char c = make_choice(v);
 
     if(c == '1') return 1;
-    else return 2;
+    if(c == '2') return 2;
+    else return 3;
 }
 
 
@@ -224,7 +230,12 @@ int maybe_endgame(int nb, int fps, Joueur &j, Joueur &j2, int &j_move_frame, cha
 
 /* LANCEMENT DU JEU *************************************************************************/
 
-/* Boucle principale du jeu */
+/* Boucle principale du jeu
+* Retourne 0 si le jeu continue
+*          1 si le jeu est terminé
+*          2 si l'utilisateur a choisi de sauvegarder sa partie
+*          3 si l'utilisateur veut revenir au menu
+*/
 int play(Joueur &j1, Joueur &j2, std::string scene, int frames_per_s) {
     std::vector<std::string> grid = convert_scene(scene, j1, j2);
 
@@ -282,9 +293,8 @@ int play(Joueur &j1, Joueur &j2, std::string scene, int frames_per_s) {
 
                 case ' ':
                     p = print_pause();
-                    if(p == 2) {
-                        return 2;
-                    }
+                    if(p == 2) return 2;
+                    if(p == 3) return 3;
                     break;
                 default: break;
             }
@@ -308,13 +318,20 @@ void time_2_play(std::string scene, Joueur &j1, Joueur &j2, int frames_per_s) {
     int tmp = play(j1, j2, scene, frames_per_s);
     while(tmp != 1) {
         if(tmp == 2) {
+            loading_bar();
+            save_a_game(scene, j1, j2);
+            system(CLEAN_SCREEN);
+            print_first_line("Les données du jeu ont été sauvegardées !");
+            return;
+        } else if(tmp == 3) {
             system(CLEAN_SCREEN);
             start(frames_per_s);
+        } else {
+            j1.update_player();
+            j2.update_player();
+            j2.set_dir(1);
+            tmp = play(j1, j2, scene, frames_per_s);
         }
-        j1.update_player();
-        j2.update_player();
-        j2.set_dir(1);
-        tmp = play(j1, j2, scene, frames_per_s);
     }
     std::vector<char> v = print_menu_endgame();
     char c = make_choice(v);
@@ -331,7 +348,56 @@ void time_2_play(std::string scene, Joueur &j1, Joueur &j2, int frames_per_s) {
 /* Lancement du menu */
 void start(int frames_per_s) {
     std::vector<char> choice = print_menu();
-    if(choice[0] == '3') {
+
+    if(choice[0] == '2') {
+        std::string data = load_data_file();
+
+        if(data == "") {
+            print_first_line("Il n'y a pas de données de jeu...");
+            text_center("Retour vers le menu.");
+            std::cout << std::endl;
+            loading_bar();
+            start(frames_per_s);
+            exit(0);
+        } else {
+            std::vector<std::string> res;
+            std::string line = "";
+            for(int i=0; i<data.length(); ++i) {
+                if(data[i] != '\n') {
+                    line += data[i];
+                } else {
+                    res.push_back(line);
+                    line = "";
+                }
+            }
+
+            std::vector<int> res_j1;
+            std::vector<int> res_j2;
+            std::string attri = "";
+            for(int i=0; i<res[1].length(); ++i) {
+                if(res[1][i] != ' ') {
+                    attri += res[1][i];
+                } else {
+                    res_j1.push_back(stoi(attri));
+                    attri = "";
+                }
+            }
+
+            for(int i=0; i<res[2].length(); ++i) {
+                if(res[2][i] != ' ') {
+                    attri += res[2][i];
+                } else {
+                    res_j2.push_back(stoi(attri));
+                    attri = "";
+                }
+            }
+            
+            Joueur j1 {res_j1[0], res_j1[1], res_j1[2], res_j1[3], res_j1[4]};
+            Joueur j2 {res_j2[0], res_j2[1], res_j2[2], res_j2[3], res_j2[4]};
+
+            time_2_play(res[0], j1, j2, frames_per_s);
+        }
+    } else if(choice[0] == '3') {
         exit(0);
     } else {
         // Chargement de la scène de combat

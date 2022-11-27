@@ -59,7 +59,7 @@ std::vector<char> first_menu() {
     std::cout << std::endl;
 
     text_center("1 - Partie simple");
-    text_center("2 - Partie personnalisée");
+    text_center("2 - Charger une partie");
     text_center("3 - Quitter");
     std::cout << std::endl;
 
@@ -118,12 +118,13 @@ std::vector<char> menu_pause() {
     std::cout << std ::endl;
 
     text_center("1 - Reprendre la partie.");
-    text_center("2 - Revenir au menu.");
+    text_center("2 - Sauvegarder la partie et quitter le jeu.");
+    text_center("3 - Revenir au menu.");
     std::cout << std::endl;
 
 	separator();
 
-    std::vector<char> v {'1', '2'};
+    std::vector<char> v {'1', '2', '3'};
 
     return v;
 }

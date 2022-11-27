@@ -46,7 +46,12 @@ int maybe_endgame(int, Joueur &, Joueur &, int &, char &, int &, std::vector<std
 
 /* LANCEMENT DU JEU *************************************************************************/
 
-/* Boucle principale du jeu */
+/* Boucle principale du jeu
+* Retourne 0 si le jeu continue
+*          1 si le jeu est terminé
+*          2 si l'utilisateur a choisi de sauvegarder sa partie
+*          3 si l'utilisateur veut revenir au menu
+*/
 int play(Joueur &, Joueur &, std::string, int);
 
 /* Lancement du jeu */

@@ -26,6 +26,9 @@ std::vector<std::string> convert_scene(std::string, Joueur &, Joueur &);
 /* Afficher une scène */
 void print_scene(std::vector<std::string>, Joueur, Joueur);
 
+void save_a_game(std::string, Joueur &, Joueur &);
+
+std::string load_data_file();
 
 
 /********************************************************************************************/

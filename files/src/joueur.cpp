@@ -9,9 +9,12 @@ Joueur::Joueur() {
     this->defending_range = 5;
 }
 
-Joueur::Joueur(int ar, int dr) {
-    this->attacking_range = ar + 5;
-    this->defending_range = dr + 5;
+Joueur::Joueur(int ar, int dr, int p, int d, int nx) {
+    this->attacking_range = ar;
+    this->defending_range = dr;
+	this->point = p;
+	this->dir = d;
+	this->x = nx;
 }
 
 
@@ -313,6 +316,17 @@ void Joueur::update_player() {
 	this->dir = 0;
 	this->x = -1;
 	this->can_move = 0;
+}
+
+
+std::string Joueur::player_to_string() {
+	std::string res = "";
+	res += std::to_string(this->attacking_range) + " ";
+	res += std::to_string(this->defending_range) + " ";
+	res += std::to_string(this->point) + " ";
+	res += std::to_string(this->dir) + " ";
+	res += std::to_string(this->x);
+	return res;
 }
 
 
