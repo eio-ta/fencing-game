@@ -61,25 +61,25 @@ std::vector<char> print_menu() {
 * Retourne 0 si le mouvement a été réalisé
            1 si le mouvement n'a pas été réalisé
 */
-int player_move_check1(char choice, int fps, Joueur &j, int &j_move_frame, char &j_move, int &j_effect) {
+int player_move_check1(char choice, int fps, Joueur &j, int &j_move_frame, char &j_move, int &j_effect, int frames_per_s) {
     switch(choice) {
         case 'd':
             if(j.get_can_move() == 0) {
-                j_move_frame = (j.get_movement_speed() + fps) % FRAMES_PER_S;
+                j_move_frame = (j.get_movement_speed() + fps) % frames_per_s;
                 j_move = 'd';
                 j.set_can_move(1);
             }
             return 0;
         case 'q':
             if(j.get_can_move() == 0) {
-                j_move_frame = (j.get_movement_speed() + fps) % FRAMES_PER_S;
+                j_move_frame = (j.get_movement_speed() + fps) % frames_per_s;
                 j_move = 'q';
                 j.set_can_move(1);
             }
             return 0;
         case 'e':
             if(j.get_can_move() == 0) {
-                j_move_frame = (j.get_movement_speed() + fps) % FRAMES_PER_S;
+                j_move_frame = (j.get_movement_speed() + fps) % frames_per_s;
                 j_move = 'e';
                 j_effect = 0;
                 j.set_can_move(1);
@@ -87,7 +87,7 @@ int player_move_check1(char choice, int fps, Joueur &j, int &j_move_frame, char 
             return 0;
         case 'a':
             if(j.get_can_move() == 0) {
-                j_move_frame = (j.get_movement_speed() + fps) % FRAMES_PER_S;
+                j_move_frame = (j.get_movement_speed() + fps) % frames_per_s;
                 j_move = 'a';
                 j_effect = 0;
                 j.set_can_move(1);
@@ -95,7 +95,7 @@ int player_move_check1(char choice, int fps, Joueur &j, int &j_move_frame, char 
             return 0;
         case 'z':
             if(j.get_can_move() == 0) {
-                j_move_frame = (j.get_attack_speed() + fps) % FRAMES_PER_S;
+                j_move_frame = (j.get_attack_speed() + fps) % frames_per_s;
                 j_move = 'z';
                 j_effect = 0;
                 j.set_can_move(1);
@@ -103,8 +103,7 @@ int player_move_check1(char choice, int fps, Joueur &j, int &j_move_frame, char 
             return 0;
         case 's':
             if(j.get_can_move() == 0) {
-                std::cout << "hellotoi" << std::endl;
-                j_move_frame = (j.get_movement_speed() + fps) % FRAMES_PER_S;
+                j_move_frame = (j.get_movement_speed() + fps) % frames_per_s;
                 j_move = 's';
                 j_effect = j.get_block_time();
                 j.set_can_move(1);
@@ -121,7 +120,7 @@ int player_move_check1(char choice, int fps, Joueur &j, int &j_move_frame, char 
           -1 si le mouvement ne s'est pas réalisé
            2 si la partie est terminée
 */
-int player_move_check2(int nb, int &fps, Joueur &j, Joueur &j2, char &j_move, int &j_effect, std::vector<std::string> &grid) {
+int player_move_check2(int nb, int &fps, Joueur &j, Joueur &j2, char &j_move, int &j_effect, std::vector<std::string> &grid, int frames_per_s) {
     if(j_move == 'd') {
         j.move_right(grid, WIDTH_MENU, HEIGH_MENU);
         return 0;
@@ -196,13 +195,13 @@ void movement_finished(int &j_move_frame, char &j_move, int &j_effect, Joueur &j
 
 
 /* Vérifie si le jeu n'est pas terminé */
-int maybe_endgame(int nb, int fps, Joueur &j, Joueur &j2, int &j_move_frame, char &j_move, int &j_effect, std::vector<std::string> &grid) {
-    int move_f = player_move_check2(nb, fps, j, j2, j_move, j_effect, grid);
+int maybe_endgame(int nb, int fps, Joueur &j, Joueur &j2, int &j_move_frame, char &j_move, int &j_effect, std::vector<std::string> &grid, int frames_per_s) {
+    int move_f = player_move_check2(nb, fps, j, j2, j_move, j_effect, grid, frames_per_s);
     if(move_f == 0) { // Le mouvement est fini, pas de gagnant
         movement_finished(j_move_frame, j_move, j_effect, j);
         return 1;
     } else if(move_f == 1) { // Le jeu continue, pas de gagnant
-        j_move_frame = (j_move_frame + 1) % FRAMES_PER_S;
+        j_move_frame = (j_move_frame + 1) % frames_per_s;
         return 1;
     } else if(move_f == 2) { // Le jeu continue, gagnant
         return 2;
@@ -216,7 +215,7 @@ int maybe_endgame(int nb, int fps, Joueur &j, Joueur &j2, int &j_move_frame, cha
 /* LANCEMENT DU JEU *************************************************************************/
 
 /* Boucle principale du jeu */
-int play(Joueur &j1, Joueur &j2, std::string scene) {
+int play(Joueur &j1, Joueur &j2, std::string scene, int frames_per_s) {
     std::vector<std::string> grid = convert_scene(scene, j1, j2);
 
     int fps = 0;
@@ -230,18 +229,18 @@ int play(Joueur &j1, Joueur &j2, std::string scene) {
     int j2_effect = -1;
 
     while(true) {
-        if(fps == FRAMES_PER_S) {
-            fps = 0;   
+        if(fps == frames_per_s) {
+            fps = 0;
         }
 
         if(j1_move_frame == fps) {
-            int tmp = maybe_endgame(1, fps, j1, j2, j1_move_frame, j1_move, j1_effect, grid);
+            int tmp = maybe_endgame(1, fps, j1, j2, j1_move_frame, j1_move, j1_effect, grid, frames_per_s);
             if(tmp == 2) return 0; // Le jeu continue, mais gagnant
             if(tmp == 3) return 1; // Le jeu est terminé
         }
 
         if(j2_move_frame == fps) {
-            int tmp = maybe_endgame(2, fps, j2, j1, j2_move_frame, j2_move, j2_effect, grid);
+            int tmp = maybe_endgame(2, fps, j2, j1, j2_move_frame, j2_move, j2_effect, grid, frames_per_s);
             if(tmp == 2) return 0; // Le jeu continue, mais gagnant
             if(tmp == 3) return 1; // Le jeu est terminé
         }
@@ -249,31 +248,31 @@ int play(Joueur &j1, Joueur &j2, std::string scene) {
         if(kbhit()) {
             char choice = getchar();
             switch(choice) {
-                case 'd': player_move_check1('d', fps, j1, j1_move_frame, j1_move, j1_effect); break;
-                case 'q': player_move_check1('q', fps, j1, j1_move_frame, j1_move, j1_effect); break;
-                case 'e': player_move_check1('e', fps, j1, j1_move_frame, j1_move, j1_effect); break;
-                case 'a': player_move_check1('a', fps, j1, j1_move_frame, j1_move, j1_effect); break;
-                case 'z': player_move_check1('z', fps, j1, j1_move_frame, j1_move, j1_effect); break;
-                case 's': player_move_check1('s', fps, j1, j1_move_frame, j1_move, j1_effect); break;
+                case 'd': player_move_check1('d', fps, j1, j1_move_frame, j1_move, j1_effect, frames_per_s); break;
+                case 'q': player_move_check1('q', fps, j1, j1_move_frame, j1_move, j1_effect, frames_per_s); break;
+                case 'e': player_move_check1('e', fps, j1, j1_move_frame, j1_move, j1_effect, frames_per_s); break;
+                case 'a': player_move_check1('a', fps, j1, j1_move_frame, j1_move, j1_effect, frames_per_s); break;
+                case 'z': player_move_check1('z', fps, j1, j1_move_frame, j1_move, j1_effect, frames_per_s); break;
+                case 's': player_move_check1('s', fps, j1, j1_move_frame, j1_move, j1_effect, frames_per_s); break;
 
                 case '\033':
                     choice = getchar();
                     choice = getchar();
                     switch(choice) {
-                        case 'C': player_move_check1('d', fps, j2, j2_move_frame, j2_move, j2_effect); break;
-                        case 'D': player_move_check1('q', fps, j2, j2_move_frame, j2_move, j2_effect); break;
+                        case 'C': player_move_check1('d', fps, j2, j2_move_frame, j2_move, j2_effect, frames_per_s); break;
+                        case 'D': player_move_check1('q', fps, j2, j2_move_frame, j2_move, j2_effect, frames_per_s); break;
                         default: break;
                     }
                     break;
-                case 'l': player_move_check1('a', fps, j2, j2_move_frame, j2_move, j2_effect); break;
-                case 'm': player_move_check1('e', fps, j2, j2_move_frame, j2_move, j2_effect); break;
-                case 'o': player_move_check1('z', fps, j2, j2_move_frame, j2_move, j2_effect); break;
-                case 'p': player_move_check1('s', fps, j2, j2_move_frame, j2_move, j2_effect); break;
+                case 'l': player_move_check1('a', fps, j2, j2_move_frame, j2_move, j2_effect, frames_per_s); break;
+                case 'm': player_move_check1('e', fps, j2, j2_move_frame, j2_move, j2_effect, frames_per_s); break;
+                case 'o': player_move_check1('z', fps, j2, j2_move_frame, j2_move, j2_effect, frames_per_s); break;
+                case 'p': player_move_check1('s', fps, j2, j2_move_frame, j2_move, j2_effect, frames_per_s); break;
                 default: break;
             }
         }
 
-        usleep(1000000 / FRAMES_PER_S);
+        usleep(1000000 / frames_per_s);
 
         system(CLEAN_SCREEN);
         print_scene(grid, j1, j2);
@@ -287,28 +286,28 @@ int play(Joueur &j1, Joueur &j2, std::string scene) {
 
 
 /* Lancement du jeu */
-void time_2_play(std::string scene, Joueur &j1, Joueur &j2) {
-    int tmp = play(j1, j2, scene);
+void time_2_play(std::string scene, Joueur &j1, Joueur &j2, int frames_per_s) {
+    int tmp = play(j1, j2, scene, frames_per_s);
     while(tmp != 1) {
         j1.update_player();
         j2.update_player();
         j2.set_dir(1);
-        tmp = play(j1, j2, scene);
+        tmp = play(j1, j2, scene, frames_per_s);
     }
     std::vector<char> v = print_menu_endgame();
     char c = make_choice(v);
     if(c == '1') {
         j1.point_0();
         j2.point_0();
-        time_2_play(scene, j1, j2);
+        time_2_play(scene, j1, j2, frames_per_s);
     } else {
-        start();
+        start(frames_per_s);
     }
 }
 
 
 /* Lancement du menu */
-void start() {
+void start(int frames_per_s) {
     std::vector<char> choice = print_menu();
     if(choice[0] == '3') {
         exit(0);
@@ -335,6 +334,6 @@ void start() {
         j2.set_dir(1);
 
         // Partie commencée
-        time_2_play(scene, j1, j2);
+        time_2_play(scene, j1, j2, frames_per_s);
     }
 }

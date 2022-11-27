@@ -1,9 +1,9 @@
 CC = g++
 
-all: output
+all: main
 
-output: main.o jeu.o conio.o interaction.o joueur.o menu.o scene.o
-	$(CC) main.o jeu.o conio.o interaction.o joueur.o menu.o scene.o -o output
+main: main.o jeu.o conio.o interaction.o joueur.o menu.o scene.o
+	$(CC) main.o jeu.o conio.o interaction.o joueur.o menu.o scene.o -o main
 
 main.o: src/main.cpp
 	$(CC) -c src/main.cpp
@@ -27,4 +27,4 @@ scene.o : src/scene.cpp include/scene.h
 	$(CC) -c src/scene.cpp
 
 clean :
-	rm -f *.o output
+	rm -f *.o main
