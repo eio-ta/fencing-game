@@ -17,6 +17,9 @@ char print_second_menu(char);
 /* Retourne les choix choisis par l'utilisateur pendant le menu */
 std::vector<char> print_menu();
 
+/* Affiche l'écran de la pause durant un jeu */
+int print_pause();
+
 
 
 /* ÉVÈVENEMENTS LIÉS AVEC LES MOUVEMENTS DES JOUEURS ****************************************/

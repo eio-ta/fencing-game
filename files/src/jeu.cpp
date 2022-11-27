@@ -54,6 +54,16 @@ std::vector<char> print_menu() {
 }
 
 
+/* Affiche l'écran de la pause durant un jeu */
+int print_pause() {
+    std::vector<char> v = menu_pause();
+    char c = make_choice(v);
+
+    if(c == '1') return 1;
+    else return 2;
+}
+
+
 
 /* ÉVÈVENEMENTS LIÉS AVEC LES MOUVEMENTS DES JOUEURS ****************************************/
 
@@ -247,6 +257,7 @@ int play(Joueur &j1, Joueur &j2, std::string scene, int frames_per_s) {
 
         if(kbhit()) {
             char choice = getchar();
+            int p;
             switch(choice) {
                 case 'd': player_move_check1('d', fps, j1, j1_move_frame, j1_move, j1_effect, frames_per_s); break;
                 case 'q': player_move_check1('q', fps, j1, j1_move_frame, j1_move, j1_effect, frames_per_s); break;
@@ -268,6 +279,13 @@ int play(Joueur &j1, Joueur &j2, std::string scene, int frames_per_s) {
                 case 'm': player_move_check1('e', fps, j2, j2_move_frame, j2_move, j2_effect, frames_per_s); break;
                 case 'o': player_move_check1('z', fps, j2, j2_move_frame, j2_move, j2_effect, frames_per_s); break;
                 case 'p': player_move_check1('s', fps, j2, j2_move_frame, j2_move, j2_effect, frames_per_s); break;
+
+                case ' ':
+                    p = print_pause();
+                    if(p == 2) {
+                        return 2;
+                    }
+                    break;
                 default: break;
             }
         }
@@ -289,6 +307,10 @@ int play(Joueur &j1, Joueur &j2, std::string scene, int frames_per_s) {
 void time_2_play(std::string scene, Joueur &j1, Joueur &j2, int frames_per_s) {
     int tmp = play(j1, j2, scene, frames_per_s);
     while(tmp != 1) {
+        if(tmp == 2) {
+            system(CLEAN_SCREEN);
+            start(frames_per_s);
+        }
         j1.update_player();
         j2.update_player();
         j2.set_dir(1);

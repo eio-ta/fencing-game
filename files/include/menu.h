@@ -44,6 +44,9 @@ std::vector<char> first_menu();
 /* Retourne les choix possibles du troisième menu */
 std::vector<char> choose_your_scene();
 
+/* Affiche le menu de pause durant une partie */
+std::vector<char> menu_pause();
+
 /* Affichage de l'écran du gagnant
 * Retourne 2 si la partie continue
            3 sinon

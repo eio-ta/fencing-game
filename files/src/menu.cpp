@@ -89,6 +89,46 @@ std::vector<char> choose_your_scene() {
 }
 
 
+/* Affiche le menu de pause durant une partie */
+std::vector<char> menu_pause() {
+    system(CLEAN_SCREEN);
+	print_first_line("PAUSE");
+
+	text_center("Instructions :");
+	std::cout << std ::endl;
+
+    text_center("---------- JOUEUR 1 ----------");
+    text_center("'q' : Aller vers la gauche. ");
+    text_center("'d' : Aller vers la droite. ");
+    text_center("'a' : Sauter vers la gauche.");
+    text_center("'e' : Sauter vers la droite.");
+    text_center("'z' : Attaque le joueur 2.  ");
+    text_center("'s' : Bloque les attaques.  ");
+    std::cout << std::endl << std::endl;
+    text_center("---------- JOUEUR 2 ----------");
+    text_center("'ARROW LEFT' : Aller vers la gauche. ");
+    text_center("'ARROW RIGHT' : Aller vers la droite. ");
+    text_center("'l' : Sauter vers la gauche.");
+    text_center("'m' : Sauter vers la droite.");
+    text_center("'o' : Attaque le joueur 2.  ");
+    text_center("'p' : Bloque les attaques.  ");
+    std::cout << std ::endl;
+
+    separator();
+    std::cout << std ::endl;
+
+    text_center("1 - Reprendre la partie.");
+    text_center("2 - Revenir au menu.");
+    std::cout << std::endl;
+
+	separator();
+
+    std::vector<char> v {'1', '2'};
+
+    return v;
+}
+
+
 /* Affichage de l'écran du gagnant
 * Retourne 2 si la partie continue
            3 sinon
@@ -124,8 +164,7 @@ std::vector<char> print_menu_endgame() {
 
     text_center("1 - Recommencer avec les mêmes paramètres");
     text_center("2 - Revenir au menu");
-    std::cout << std::endl;
-    std::cout << std::endl;
+    std::cout << std::endl << std::endl;
 
     separator();
 
