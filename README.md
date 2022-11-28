@@ -33,12 +33,21 @@ Ce projet est basé sur un jeu simple d'escrime. Dans ce jeu, un joueur peut mar
 3. Le jeu se déroule dans une scène qui peut être modifiée par le joueur par l'intermédiaire de fichiers. La scène peut être uniquement lu avec l'extension `.ffscene`. Le fichier doit contenir une ligne avec les caractères suivants : `1` (le premier joueur), `2` (le deuxième joueurs), `_` (le sol) et `x` (un obstacle).
 4. Chaque joueur possède les attributs suivants : `movement_speed` (vitesse de mouvement), `attacking_speed` (vitesse d'attaque), `attacking_range` (portée d'attaque), `defending_range` (portée de défense) et `block_time` (durée du blocage) et effectue ses mouvements en fonction de ses attributs.
 5. Pendant un combat, le joueur peut :
-    - se déplacer vers la gauche (`d` pour le joueur 1, `ARROW RIGHT` pour le joueur 2).
-    - se déplacer vers la droite (`q` pour le joueur 1, `ARROW LEFT` pour le joueur 2).
-    - sauter par dessus un obstacle vers la droite (`e` pour le joueur 1, `l` pour le joueur 2).
-    - sauter par dessus un obstacle vers la gauche (`a` pour le joueur 1, `m` pour le joueur 2).
-    - attaquer (`z` pour le joueur 1, `o` pour le joueur 2).
-    - bloquer une attaque (`s` pour le joueur 1, `p` pour le joueur 2).
+    - se déplacer vers la gauche.
+    - se déplacer vers la droite.
+    - sauter par dessus un obstacle vers la droite.
+    - sauter par dessus un obstacle vers la gauche.
+    - attaquer.
+    - bloquer une attaque.
+
+| Déplacements                   | Joueur 1  | Joueur 2  |
+| ------------------------------ | --------- | --------- |
+| se déplacer vers la droite     | d         | →         |
+| se déplacer vers la gauche     | q         | ←         |
+| sauter vers la droite          | e         | l         |
+| sauter vers la gauche          | a         | m         |
+| attaquer                       | z         | o         |
+| bloquer les attaques           | s         | p         |
 
 
 **Fonctionnalités secondaires :**
