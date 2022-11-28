@@ -31,10 +31,11 @@ int Joueur::get_movement_speed() { return this->movement_speed; }
 int Joueur::get_attack_speed() { return this->attacking_speed; }
 int Joueur::get_block_time() { return this->block_time; }
 
-int Joueur::get_can_move() { return this->can_move; }
-void Joueur::set_can_move(int a) { if(a==0 || a==1) this->can_move = a; }
+int Joueur::get_is_on_movement() { return this->is_on_movement; }
+void Joueur::set_is_on_movement(int a) { if(a==0 || a==1) this->is_on_movement = a; }
 
 void Joueur::set_attribute(int a) { if(a==1 || a==2 || a == 3) this->attribute = a; }
+void Joueur::set_x(int a) { this->x = a; }
 
 
 
@@ -42,127 +43,102 @@ void Joueur::set_attribute(int a) { if(a==1 || a==2 || a == 3) this->attribute =
 
 
 /* Bouge le personnage vers la droite */
-int Joueur::can_move_right(std::vector<std::string> grid, int w, int h) {
-    if((this->x + 1) < w-2) {
-        if(grid[h-1][(this->x + 1 + 2)] == ' ' && grid[h-1][(this->x + 1 + 4)] == ' ') {
-			return 0;
+int Joueur::can_move_to(std::vector<std::string> grid, int w, int h, int move) {
+	if(move == RIGHT) {
+		if((this->x + RIGHT) < w-2) {
+			if(grid[h-1][(this->x + RIGHT + 1)] == ' ' && grid[h-1][(this->x + RIGHT + 2)] == ' ' && grid[h-4][(this->x + RIGHT + 2)] == ' ') {
+				return 0;
+			}
+		}
+	} else {
+		if((this->x + LEFT) > 2) {
+			if(grid[h-1][(this->x + LEFT - 1)] == ' ' && grid[h-1][(this->x + LEFT - 2)] == ' ' && grid[h-4][(this->x + LEFT - 2)] == ' ') {
+				return 0;
+			}
 		}
     }
 	return 1;
 }
 
 
-void Joueur::move_right(std::vector<std::string> &grid, int w, int h) {
-    if(can_move_right(grid, w, h) == 0) {
-        this->dir = 0;
-        remove_position(grid, h);
-		this->x += 1;
-        replace_player_r(grid, 1, h);
-    }
-}
-
-
-/* Bouge le personnage vers la gauche */
-int Joueur::can_move_left(std::vector<std::string> grid, int w, int h) {
-    if((this->x - 1) > 2) {
-        if(grid[h-1][(this->x - 1 - 2)] == ' ' && grid[h-1][(this->x - 1 - 4)] == ' ') {
-			return 0;
-		}
-    }
-	return 1;
-}
-
-
-void Joueur::move_left(std::vector<std::string> &grid, int w, int h) {
-    if(can_move_left(grid, w, h) == 0) {
-		this->dir = 1;
-		remove_position(grid, h);
-		this->x -= 1;
-		replace_player_l(grid, 1, h);
-    }
+void Joueur::move_to(std::vector<std::string> &grid, int w, int h, int move) {
+	this->dir = (move == RIGHT) ? 0 : 1;
+    remove_position(grid, h);
+	this->x += (move == RIGHT) ? 1 : -1;
+	replace_player(grid, 1, h, move);
 }
 
 
 /* Fais sauter le personnage vers la droite */
-int Joueur::can_jump_right(std::vector<std::string> grid, int w, int h) {
-    if(this->x+9 < w-2) {
-        for(int i=2; i<10; ++i) {
-            if(grid[h-1][(this->x+i)] != ' ' && grid[h-1][(this->x+i)] != 'X') {
-				return 1;
+int Joueur::can_jump_to(std::vector<std::string> grid, int w, int h, int move) {
+	if(move == JUMP_RIGHT) {
+		if((this->x + JUMP_RIGHT) < w-2) {
+			for(int i=0; i<h-1; ++i) {
+				for(int j=(this->x + 3); j < (this->x + 6); ++j) {
+					if(!(grid[i][j] == ' ' || grid[i][j] == 'X')) return 1;
+				}
 			}
+
+			for(int i=0; i<h-1; ++i) {
+				for(int j=(this->x + 6); j < (this->x + 10); ++j) {
+					if(!(grid[i][j] == ' ')) return 1;
+				}
+			}
+			return 0;
 		}
-        return 0;
-    }
-	return 1;
-}
-
-
-void Joueur::jump_right_pos1(std::vector<std::string> &grid, int w, int h) {
-    if(can_jump_right(grid, w, h) == 0) {
-		this->dir = 0;
-		remove_position(grid, h);
-		this->x += 4;
-		replace_player_r(grid, 0, h);
-    }
-}
-
-
-void Joueur::jump_right_pos2(std::vector<std::string> &grid, int w, int h) {
-    remove_position(grid, h);
-	this->x += 4;
-	replace_player_r(grid, 0, h);
-}
-
-
-/* Fais sauter le personnage vers la gauche */
-int Joueur::can_jump_left(std::vector<std::string> grid, int w, int h) {
-    if(this->x-9 > 2) {
-        for(int i=-9; i<-3; ++i) {
-            if(grid[h-1][(this->x+i)] != ' ' && grid[h-1][(this->x+i)] != 'X') {
-				return 1;
+	} else {
+		if((this->x + JUMP_LEFT) > 0) {
+			for(int i=0; i<h-1; ++i) {
+				for(int j=(this->x - 3); j > (this->x - 6); --j) {
+					if(!(grid[i][j] == ' ' || grid[i][j] == 'X')) return 1;
+				}
 			}
-        }
-        return 0;
-    }
+
+			for(int i=0; i<h-1; ++i) {
+				for(int j=(this->x - 6); j > (this->x - 10); --j) {
+					if(!(grid[i][j] == ' ')) return 1;
+				}
+			}
+			return 0;
+		}
+	}
 	return 1;
 }
 
 
-void Joueur::jump_left_pos1(std::vector<std::string> &grid, int w, int h) {
-    if(can_jump_left(grid, w, h) == 0) {
-		this->dir = 1;
-		remove_position(grid, h);
-		this->x -= 4;
-		replace_player_l(grid, 0, h);
-    }
+void Joueur::jump_to_pos1(std::vector<std::string> &grid, int w, int h, int move) {
+	this->dir = (move == JUMP_RIGHT) ? 0 : 1;
+	remove_position(grid, h);
+	this->x += (move == JUMP_RIGHT) ? 4 : -4;
+	replace_player(grid, 0, h, move);
 }
 
 
-void Joueur::jump_left_pos2(std::vector<std::string> &grid, int w, int h) {
+void Joueur::jump_to_pos2(std::vector<std::string> &grid, int w, int h, int move) {
     remove_position(grid, h);
-	this->x -= 4;
-	replace_player_l(grid, 0, h);
+	this->x += (move == JUMP_RIGHT) ? 3 : -3;
+	replace_player(grid, 0, h, move);
 }
 
 
 /* Mets le personnage en mode ATTAQUE */
 void Joueur::player_attack(std::vector<std::string> &grid, int w, int h) {
 	this->attribute = 1;
-    update_position(grid, w, h, 1);
+    update_position(grid, w, h, 1, (this->dir == 0) ? RIGHT : LEFT);
 }
 
 
 /* Mets le personnage en mode REST */
 void Joueur::player_rest(std::vector<std::string> &grid, int w, int h) {
 	this->attribute = 3;
-	update_position(grid, w, h, 1);
+	update_position(grid, w, h, 1, (this->dir == 0) ? RIGHT : LEFT);
 }
 
 
 /* Mets le personnage en mode BLOQUE */
 void Joueur::player_block(std::vector<std::string> &grid, int w, int h) {
 	this->attribute = 2;
-	update_position(grid, w, h, 1);
+	update_position(grid, w, h, 1, (this->dir == 0) ? RIGHT : LEFT);
 } 
 
 
@@ -205,7 +181,7 @@ void Joueur::add_point(Joueur j2) {
 /* AFFICHAGE SUR LE TERMINAL *********************************************************/
 
 /* Affiche un personnage vers la direction DROITE sur une scène */
-void Joueur::replace_player_r(std::vector<std::string>& grid, int jump, int height) {
+void Joueur::replace_player(std::vector<std::string>& grid, int jump, int height, int move) {
 	int h = height;
 	if(jump == 0) h = height - 2;
 	grid[h-5][this->x-1] = '<';
@@ -213,70 +189,23 @@ void Joueur::replace_player_r(std::vector<std::string>& grid, int jump, int heig
 	grid[h-5][this->x+1] = '>';
 
 	grid[h-4][this->x] = '|';
-	grid[h-4][this->x+1] = '\\';
 
-	if(this->attribute == 1) grid[h-4][this->x+2] = '_';
-	else if(this->attribute == 2) grid[h-4][this->x+2] = '|';
-	else grid[h-4][this->x+2] = '/';
+	if(move == RIGHT || move == JUMP_RIGHT) {
+		grid[h-4][this->x+1] = '\\';
+		if(this->attribute == 1) grid[h-4][this->x+2] = '_';
+		else if(this->attribute == 2) grid[h-4][this->x+2] = '|';
+		else grid[h-4][this->x+2] = '/';
+	} else {
+		grid[h-4][this->x-1] = '/';
+		if(this->attribute == 1) grid[h-4][this->x-2] = '_';
+		else if(this->attribute == 2) grid[h-4][this->x-2] = '|';
+		else grid[h-4][this->x-2] = '\\';
+	}
 
 	grid[h-3][this->x] = '|';
 	grid[h-2][this->x] = '|';
 	grid[h-1][this->x] = '|';
 	grid[h-1][this->x-1] = '/';
-}
-
-
-void Joueur::convert_player_r(std::vector<std::string>& grid, int new_x, int jump, int height) {
-	this->x = new_x;
-	replace_player_r(grid, jump, height);
-
-	/*
-
-	<o>
-	 |\/
-	 |
-	 |
-	/|
-
-	*/
-}
-
-
-/* Affiche un personnage vers la direction GAUCHE sur une scène */
-void Joueur::replace_player_l(std::vector<std::string>& grid, int jump, int height) {
-	int h = height;
-	if(jump == 0) h = height - 2;
-	grid[h-5][this->x-1] = '<';
-	grid[h-5][this->x] = 'o';
-	grid[h-5][this->x+1] = '>';
-
-	grid[h-4][this->x] = '|';
-	grid[h-4][this->x-1] = '/';
-	
-	if(this->attribute == 1) grid[h-4][this->x-2] = '_';
-	else if(this->attribute == 2) grid[h-4][this->x-2] = '|';
-	else grid[h-4][this->x-2] = '\\';
-
-	grid[h-3][this->x] = '|';
-	grid[h-2][this->x] = '|';
-	grid[h-1][this->x] = '|';
-	grid[h-1][this->x+1] = '\\';
-}
-
-
-void Joueur::convert_player_l(std::vector<std::string>& grid, int new_x, int jump, int height) {
-    this->x = new_x;
-    replace_player_l(grid, jump, height);
-
-	/*
-
-	 <o>
-	\_|
-	  |
-	  |
-	 /|
-
-	*/
 }
 
 
@@ -297,13 +226,9 @@ void Joueur::remove_position(std::vector<std::string>& grid, int height) {
 
 
 /* Supprime un personnage d'une scène et ajoute sa nouvelle position */
-void Joueur::update_position(std::vector<std::string>& grid, int w, int h, int jump) {
+void Joueur::update_position(std::vector<std::string>& grid, int w, int h, int jump, int move) {
 	remove_position(grid, h);
-    if(this->dir == 0) {
-		replace_player_r(grid, jump, h);
-	} else {
-		replace_player_l(grid, jump, h);
-	}
+	replace_player(grid, jump, h, move);
 }
 
 
@@ -315,7 +240,7 @@ void Joueur::update_player() {
     this->attribute = 3;
 	this->dir = 0;
 	this->x = -1;
-	this->can_move = 0;
+	this->is_on_movement = 0;
 }
 
 

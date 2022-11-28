@@ -4,6 +4,11 @@
 #include <iostream>
 #include <vector>
 
+#define RIGHT 1
+#define LEFT -1
+#define JUMP_RIGHT 7
+#define JUMP_LEFT -7
+
 /* Classe Objet Joueur
 * Représente un joueur dans le jeu
 */
@@ -45,7 +50,7 @@ class Joueur {
         * 0 = OUI
         1 = NON
         */
-        int can_move = 0;
+        int is_on_movement = 0;
 
 
 
@@ -72,32 +77,24 @@ class Joueur {
         int get_attack_speed();
         int get_block_time();
 
-        int get_can_move();
-        void set_can_move(int);
+        int get_is_on_movement();
+        void set_is_on_movement(int);
 
         void set_attribute(int);
+        void set_x(int);
 
 
 
         /* MOUVEMENTS ************************************************************************/
 
-        /* Bouge le personnage vers la droite */
-        int can_move_right(std::vector<std::string>, int, int);
-        void move_right(std::vector<std::string> &, int, int);
-
-        /* Bouge le personnage vers la gauche */
-        int can_move_left(std::vector<std::string>, int, int);
-        void move_left(std::vector<std::string> &, int, int);
+        /* Vérifie si le joueur peut se déplacer horizontalement */
+        int can_move_to(std::vector<std::string>, int, int, int);
+        void move_to(std::vector<std::string> &, int, int, int);
 
         /* Fais sauter le personnage vers la droite */
-        int can_jump_right(std::vector<std::string>, int, int);
-        void jump_right_pos1(std::vector<std::string> &, int, int);
-        void jump_right_pos2(std::vector<std::string> &, int, int);
-
-        /* Fais sauter le personnage vers la gauche */
-        int can_jump_left(std::vector<std::string> grid, int w, int h);
-        void jump_left_pos1(std::vector<std::string> &, int, int);
-        void jump_left_pos2(std::vector<std::string> &, int, int);
+        int can_jump_to(std::vector<std::string>, int, int, int);
+        void jump_to_pos1(std::vector<std::string> &, int, int, int);
+        void jump_to_pos2(std::vector<std::string> &, int, int, int);
 
         /* Mets le personnage en mode ATTAQUE */
         void player_attack(std::vector<std::string> &, int, int);
@@ -125,8 +122,7 @@ class Joueur {
         /* AFFICHAGE SUR LE TERMINAL *********************************************************/
 
         /* Affiche un personnage vers la direction DROITE sur une scène */
-        void replace_player_r(std::vector<std::string>&, int, int);
-        void convert_player_r(std::vector<std::string>&, int, int, int);
+        void replace_player(std::vector<std::string>&, int, int, int);
 
         /* Affiche un personnage vers la direction GAUCHE sur une scène */
         void replace_player_l(std::vector<std::string>&, int, int);
@@ -140,7 +136,7 @@ class Joueur {
         void remove_position(std::vector<std::string>&, int);
 
         /* Supprime un personnage d'une scène et ajoute sa nouvelle position */
-        void update_position(std::vector<std::string>&, int, int, int);
+        void update_position(std::vector<std::string>&, int, int, int, int);
 
 
 

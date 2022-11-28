@@ -76,17 +76,19 @@ std::vector<std::string> convert_scene(std::string scene, Joueur &j1, Joueur &j2
 		int new_x = new_x = (i * WIDTH_MENU) / scene.length();
 		switch (scene[i]) {
 			case '1':
+				j1.set_x(new_x);
 				if(j1.get_dir() == 0) {
-					j1.convert_player_r(lines, new_x, 1, HEIGH_MENU);
+					j1.replace_player(lines, 1, HEIGH_MENU, RIGHT);
 				} else {
-					j1.convert_player_l(lines, new_x, 1, HEIGH_MENU);
+					j1.replace_player(lines, 1, HEIGH_MENU, LEFT);
 				}
 				break;
 			case '2':
+				j2.set_x(new_x);
 				if(j2.get_dir() == 0) {
-					j2.convert_player_r(lines, new_x, 1, HEIGH_MENU);
+					j2.replace_player(lines, 1, HEIGH_MENU, RIGHT);
 				} else {
-					j2.convert_player_l(lines, new_x, 1, HEIGH_MENU);
+					j2.replace_player(lines, 1, HEIGH_MENU, LEFT);
 				}
 				break;
 			case 'x':

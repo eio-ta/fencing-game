@@ -31,7 +31,7 @@ char print_pause();
 * Retourne 0 si le mouvement a été réalisé
            1 si le mouvement n'a pas été réalisé
 */
-int player_move_check1(char, int, Joueur &, int &, char &, int &, int);
+int player_move_check1(char, int, Joueur &, int &, char &, int &, int, std::vector<std::string> &);
 
 /* Réalise les mouvements des joueurs
 * Retourne 0 si le mouvement est terminé
@@ -43,7 +43,12 @@ int player_move_check2(int, int &, Joueur &, Joueur &, char &, int &, std::vecto
 /* Initialise les attributs d'un joueur */
 void movement_finished(int &, char &, int &, Joueur &);
 
-/* Vérifie si le jeu n'est pas terminé */
+/* Vérifie si le jeu n'est pas terminé
+* Retourne 0 si le mouvement du joueur est terminé
+*          1 si le mouvement du joueur n'est pas fini
+*          2 s'il y a un joueur qui a marqué un point
+*          3 si le jeu est terminé
+*/
 int maybe_endgame(int, Joueur &, Joueur &, int &, char &, int &, std::vector<std::string> &, int);
 
 
