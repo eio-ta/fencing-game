@@ -29,6 +29,7 @@ void separator();
 /* Affiche un texte au centre de l'écran */
 void text_center(std::string);
 
+/* Délimite un STRING par un délimiteur */
 std::vector<std::string> split_delim(std::string, int);
 
 /* Affiche la première ligne d'un écran */

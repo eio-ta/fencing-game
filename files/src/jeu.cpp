@@ -46,7 +46,7 @@ std::vector<char> print_menu() {
     char c2 = 0;
     char c3 = 0;
 
-    // loading_bar();
+    loading_bar();
     c1 = print_first_menu();
 
     if(c1 == '3' || c1 == '2') {
@@ -383,7 +383,7 @@ void start(int frames_per_s) {
             }
             scene = load_a_scene(filename);
         }
-        // loading_bar();
+        loading_bar();
     } else if(choice[0] == '2') {
         print_loading_game(0);
         std::vector<std::string> data = split_delim(load_data_file(), 1);

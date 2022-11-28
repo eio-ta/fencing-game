@@ -89,10 +89,14 @@ class Joueur {
 
         /* Vérifie si le joueur peut se déplacer horizontalement */
         int can_move_to(std::vector<std::string>, int, int, int);
+
+        /* Fais bouger le joueur suivant la direction */
         void move_to(std::vector<std::string> &, int, int, int);
 
-        /* Fais sauter le personnage vers la droite */
+        /* Vérifie si le joueur peut sauter */
         int can_jump_to(std::vector<std::string>, int, int, int);
+
+        /* Les différentes positions pour sauter */
         void jump_to_pos1(std::vector<std::string> &, int, int, int);
         void jump_to_pos2(std::vector<std::string> &, int, int, int);
 
@@ -124,10 +128,6 @@ class Joueur {
         /* Affiche un personnage vers la direction DROITE sur une scène */
         void replace_player(std::vector<std::string>&, int, int, int);
 
-        /* Affiche un personnage vers la direction GAUCHE sur une scène */
-        void replace_player_l(std::vector<std::string>&, int, int);
-        void convert_player_l(std::vector<std::string>&, int, int, int);
-
 
 
         /* SUPPRESSION DU TERMINAL ***********************************************************/
@@ -140,13 +140,15 @@ class Joueur {
 
 
 
-        /* MISE À 0 DU JOUEUR ****************************************************************/
+        /* MISE À JOUR DU JOUEUR *************************************************************/
 
-        /* Remet un personnage les attributs d'orginie */
+        /* Remet un personnage les attributs d'origine */
         void update_player();
 
+        /* Convertie un personnage en STRING */
         std::string player_to_string();
 
+        /* Copie un joueur */
         void copy(Joueur);
 
 

@@ -25,6 +25,7 @@ void text_center(std::string str) {
 }
 
 
+/* Délimite un STRING par un délimiteur */
 std::vector<std::string> split_delim(std::string data, int delim) {
     std::vector<std::string> res;
 	std::string attri = "";
@@ -40,13 +41,6 @@ std::vector<std::string> split_delim(std::string data, int delim) {
     }
     return res;
 }
-
-
-
-
-
-
-
 
 
 /* Affiche la première ligne d'un écran */
@@ -130,6 +124,7 @@ std::vector<char> third_menu() {
     return v;
 }
 
+/* Menu pour charger une partie */
 int print_loading_game(int echo) {
     int valid_data = 1;
     std::ifstream in_stream;
@@ -154,11 +149,6 @@ int print_loading_game(int echo) {
         return -1;
     }
 }
-
-
-
-
-
 
 
 /* Affiche le menu de pause durant une partie */

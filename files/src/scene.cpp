@@ -128,6 +128,7 @@ void print_scene(std::vector<std::string> lines, Joueur j1, Joueur j2) {
 }
 
 
+/* Sauvegarde la partie en cours */
 void save_a_game(std::string scene, Joueur &j1, Joueur &j2) {
 	std::string l2 = j1.player_to_string();
 	std::string l3 = j2.player_to_string();
@@ -138,6 +139,8 @@ void save_a_game(std::string scene, Joueur &j1, Joueur &j2) {
     out.close();
 }
 
+
+/* Transforme les données d'un fichier de sauvegarde en STRING */
 std::string load_data_file() {
 	std::string res = "";
     std::ifstream in_stream;
@@ -155,6 +158,7 @@ std::string load_data_file() {
 }
 
 
+/* Transforme les données d'un fichiers en personnage */
 void load_data_file_to_player(Joueur &j, std::string data) {
 	std::vector<std::string> res_s = split_delim(data, 0);
 	std::vector<int> res_i;
@@ -166,10 +170,6 @@ void load_data_file_to_player(Joueur &j, std::string data) {
 	Joueur tmp {res_i[0], res_i[1], res_i[2], res_i[3], res_i[4]};
 	j.copy(tmp);
 }
-
-
-
-
 
 
 

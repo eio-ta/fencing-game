@@ -24,10 +24,13 @@ std::vector<std::string> convert_scene(std::string, Joueur &, Joueur &);
 /* Afficher une scène */
 void print_scene(std::vector<std::string>, Joueur, Joueur);
 
+/* Sauvegarde la partie en cours */
 void save_a_game(std::string, Joueur &, Joueur &);
 
+/* Transforme les données d'un fichier de sauvegarde en STRING */
 std::string load_data_file();
 
+/* Transforme les données d'un fichiers en personnage */
 void load_data_file_to_player(Joueur &, std::string);
 
 

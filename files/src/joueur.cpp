@@ -42,7 +42,7 @@ void Joueur::set_x(int a) { this->x = a; }
 /* MOUVEMENTS ********************************************************************************/
 
 
-/* Bouge le personnage vers la droite */
+/* Vérifie si le joueur peut se déplacer horizontalement */
 int Joueur::can_move_to(std::vector<std::string> grid, int w, int h, int move) {
 	if(move == RIGHT) {
 		if((this->x + RIGHT) < w-2) {
@@ -61,6 +61,7 @@ int Joueur::can_move_to(std::vector<std::string> grid, int w, int h, int move) {
 }
 
 
+/* Fais bouger le joueur suivant la direction */
 void Joueur::move_to(std::vector<std::string> &grid, int w, int h, int move) {
 	this->dir = (move == RIGHT) ? 0 : 1;
     remove_position(grid, h);
@@ -69,7 +70,7 @@ void Joueur::move_to(std::vector<std::string> &grid, int w, int h, int move) {
 }
 
 
-/* Fais sauter le personnage vers la droite */
+/* Vérifie si le joueur peut sauter */
 int Joueur::can_jump_to(std::vector<std::string> grid, int w, int h, int move) {
 	if(move == JUMP_RIGHT) {
 		if((this->x + JUMP_RIGHT) < w-2) {
@@ -106,6 +107,7 @@ int Joueur::can_jump_to(std::vector<std::string> grid, int w, int h, int move) {
 }
 
 
+/* Les différentes positions pour sauter */
 void Joueur::jump_to_pos1(std::vector<std::string> &grid, int w, int h, int move) {
 	this->dir = (move == JUMP_RIGHT) ? 0 : 1;
 	remove_position(grid, h);
@@ -114,6 +116,7 @@ void Joueur::jump_to_pos1(std::vector<std::string> &grid, int w, int h, int move
 }
 
 
+/* Les différentes positions pour sauter */
 void Joueur::jump_to_pos2(std::vector<std::string> &grid, int w, int h, int move) {
     remove_position(grid, h);
 	this->x += (move == JUMP_RIGHT) ? 3 : -3;
@@ -180,7 +183,7 @@ void Joueur::add_point(Joueur j2) {
 
 /* AFFICHAGE SUR LE TERMINAL *********************************************************/
 
-/* Affiche un personnage vers la direction DROITE sur une scène */
+/* Affiche un personnage suivant la direction sur une scène */
 void Joueur::replace_player(std::vector<std::string>& grid, int jump, int height, int move) {
 	int h = height;
 	if(jump == 0) h = height - 2;
@@ -195,17 +198,18 @@ void Joueur::replace_player(std::vector<std::string>& grid, int jump, int height
 		if(this->attribute == 1) grid[h-4][this->x+2] = '_';
 		else if(this->attribute == 2) grid[h-4][this->x+2] = '|';
 		else grid[h-4][this->x+2] = '/';
+		grid[h-1][this->x-1] = '/';
 	} else {
 		grid[h-4][this->x-1] = '/';
 		if(this->attribute == 1) grid[h-4][this->x-2] = '_';
 		else if(this->attribute == 2) grid[h-4][this->x-2] = '|';
 		else grid[h-4][this->x-2] = '\\';
+		grid[h-1][this->x+1] = '\\';
 	}
 
 	grid[h-3][this->x] = '|';
 	grid[h-2][this->x] = '|';
 	grid[h-1][this->x] = '|';
-	grid[h-1][this->x-1] = '/';
 }
 
 
@@ -235,7 +239,7 @@ void Joueur::update_position(std::vector<std::string>& grid, int w, int h, int j
 
 /* MISE À 0 DU JOUEUR ************************************************************************/
 
-/* Remet un personnage les attributs d'orginie */
+/* Remet un personnage les attributs d'origine */
 void Joueur::update_player() {
     this->attribute = 3;
 	this->dir = 0;
@@ -244,6 +248,7 @@ void Joueur::update_player() {
 }
 
 
+/* Convertie un personnage en STRING */
 std::string Joueur::player_to_string() {
 	std::string res = "";
 	res += std::to_string(this->attacking_range) + " ";
@@ -254,6 +259,8 @@ std::string Joueur::player_to_string() {
 	return res;
 }
 
+
+/* Copie un joueur */
 void Joueur::copy(Joueur j) {
 	this->attacking_range = j.attacking_range;
 	this->defending_range = j.defending_range;
