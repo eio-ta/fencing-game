@@ -20,9 +20,9 @@ class Joueur {
         /* Attributs */
         float movement_speed = 1;
         int attacking_range;
-        float attacking_speed = 1;
+        float attacking_speed = 5;
         int defending_range;
-        int block_time = 3;
+        int block_time = 5;
 
         int point = 0;
 

@@ -123,9 +123,9 @@ int player_move_check1(char choice, int fps, Joueur &j, int &j_move_frame, char 
             return 0;
         case 'z':
             if(j.get_is_on_movement() == 0) {
-                j_move_frame = (j.get_attack_speed() + fps) % frames_per_s;
+                j_move_frame = (j.get_movement_speed() + fps) % frames_per_s;
                 j_move = 'z';
-                j_effect = 0;
+                j_effect = j.get_attack_speed();
                 j.set_is_on_movement(1);
             }
             return 0;
@@ -182,17 +182,18 @@ int player_move_check2(int nb, int &fps, Joueur &j, Joueur &j2, char &j_move, in
             return 0;
         }
     } else if(j_move == 'z') {
-        if(j_effect == 0) {
+        if(j_effect > 0) {
             j.player_attack(grid, WIDTH_MENU, HEIGH_MENU);
-            j_effect = 1;
-            return 1;
-        } else {
+            j_effect -= 1;
+
             int tmp = j.get_point();
             j.add_point(j2);
             
             if(j.get_point() != tmp) {
                 return print_win(nb, j, j2);
             }
+            return 1;
+        } else {
             j.player_rest(grid, WIDTH_MENU, HEIGH_MENU);
             return 0;
         }
