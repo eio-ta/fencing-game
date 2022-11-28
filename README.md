@@ -6,8 +6,7 @@
 1. [Introduction et informations](README.md#introduction-et-informations)
 2. [Fonctionnalités](README.md#fonctionnalités)
 3. [Compilation, exécution et arguments possibles](README.md#compilation-execution-et-arguments-possibles)
-4. [Découpage modulaire](README.md#découpage-modulaire)
-5. [Organisation de travail](README.md#organisation-de-travail)
+4. [Organisation de travail](README.md#organisation-de-travail)
 
 -------------------------------------------------------
 
@@ -34,18 +33,18 @@ Ce projet est basé sur un jeu simple d'escrime. Dans ce jeu, un joueur peut mar
 3. Le jeu se déroule dans une scène qui peut être modifiée par le joueur par l'intermédiaire de fichiers. La scène peut être uniquement lu avec l'extension `.ffscene`. Le fichier doit contenir une ligne avec les caractères suivants : `1` (le premier joueur), `2` (le deuxième joueurs), `_` (le sol) et `x` (un obstacle).
 4. Chaque joueur possède les attributs suivants : `movement_speed` (vitesse de mouvement), `attacking_speed` (vitesse d'attaque), `attacking_range` (portée d'attaque), `defending_range` (portée de défense) et `block_time` (durée du blocage) et effectue ses mouvements en fonction de ses attributs.
 5. Pendant un combat, le joueur peut :
-    - se déplacer vers la gauche.
-    - se déplacer vers la droite.
-    - sauter par dessus un obstacle vers la droite.
-    - sauter par dessus un obstacle vers la gauche.
-    - attaquer.
-    - bloquer une attaque.
+    - se déplacer vers la gauche (`d` pour le joueur 1, `ARROW RIGHT` pour le joueur 2).
+    - se déplacer vers la droite (`q` pour le joueur 1, `ARROW LEFT` pour le joueur 2).
+    - sauter par dessus un obstacle vers la droite (`e` pour le joueur 1, `l` pour le joueur 2).
+    - sauter par dessus un obstacle vers la gauche (`a` pour le joueur 1, `m` pour le joueur 2).
+    - attaquer (`z` pour le joueur 1, `o` pour le joueur 2).
+    - bloquer une attaque (`s` pour le joueur 1, `p` pour le joueur 2).
 
 
 **Fonctionnalités secondaires :**
 
 1. Un menu simple d'accès a été ajouté pour pouvoir choisir les paramètres de son jeu.
-2. Un mode de jeu simple (avec une scène par défaut) a été rajoutée.
+2. Un mode de jeu simple (avec le choix d'une scène par défaut) a été rajoutée.
 3. Une partie s'arrête au moment où l'un des joueurs a atteint trois points.
 4. À la fin du jeu, les joueurs peuvent décider de recommencer une partie avec les mêmes paramètres ou de revenir sur le menu.
 5. Au début du jeu, le joueur peut choisir le nombre d'images par seconde avec une option sur la ligne de commande.
@@ -78,20 +77,9 @@ Il suffit de mettre un `[CHIFFRE]` pour ajouter le nombre d'images par secondes.
 
 
 
-## Découpage Modulaire
-
-
-**Schéma et arborescence des fichiers et des modules**
-
-![SCHEMA MODULES](...)
-
-
-**Description des modules et des fichiers présents**
-
-
 ## Organisation de travail
 
 
 **Brève chronologie du travail effectué**
 
-![CHRONO 1](...)
+![CHRONO 1](./files/data/chrono.png)
