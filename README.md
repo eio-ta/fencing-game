@@ -15,9 +15,10 @@
 ## Introduction et informations
 **Informations généraux**
 - Le sujet du projet : [projet.pdf](https://github.com/eio-ta/project-pa/blob/main/Project.pdf)
+- Le lien du GitHub : [GITHUB](https://github.com/eio-ta/fencing-game)
 
 **Identifiants et membres du groupe**
-1. TANG Elody, 21953199
+1. TANG Elody, 21953199, Master VMI
 
 
 
