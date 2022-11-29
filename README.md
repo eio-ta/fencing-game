@@ -70,6 +70,7 @@ Ce projet est basé sur un jeu simple d'escrime. Dans ce jeu, un joueur peut mar
 **Compilation et éxécution**
 
 Il existe une méthode simple pour compiler et exécuter le programme "Fencing game" :
+- Aller dans le dossier `/files`.
 - `make` sans argument lancera la compilation du jeu.
 - `./main <ARG1>` lancera le programme avec l'argument utilisé.
 - `make clean` pour effacer les fichiers produits par `make` lors de sa compilation.
