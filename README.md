@@ -32,7 +32,7 @@ Ce projet est basé sur un jeu simple d'escrime. Dans ce jeu, un joueur peut mar
 1. Le programme est capable de permettre à deux joueurs locaux de jouer au jeu avec un écran de terminal.
 2. Le nombre d'images par seconde est modifiable avec une option.
 3. Le jeu se déroule dans une scène qui peut être modifiée par le joueur par l'intermédiaire de fichiers. La scène peut être uniquement lu avec l'extension `.ffscene`. Le fichier doit contenir une ligne avec les caractères suivants : `1` (le premier joueur), `2` (le deuxième joueurs), `_` (le sol) et `x` (un obstacle).
-4. Chaque joueur possède les attributs suivants : `movement_speed` (vitesse de mouvement), `attacking_speed` (vitesse d'attaque), `attacking_range` (portée d'attaque), `defending_range` (portée de défense) et `block_time` (durée du blocage) et effectue ses mouvements en fonction de ses attributs.
+4. Chaque joueur possède les attributs suivants : `movement_speed` (vitesse de mouvement), `attacking_speed` (durée d'attaque), `attacking_range` (portée d'attaque), `defending_range` (portée de défense) et `block_time` (durée du blocage) et effectue ses mouvements en fonction de ses attributs.
 5. Pendant un combat, le joueur peut :
     - se déplacer vers la gauche.
     - se déplacer vers la droite.
